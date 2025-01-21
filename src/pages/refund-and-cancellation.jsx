@@ -11,18 +11,18 @@ export default function RefundAndCancellation() {
                         Refund & Return Policy
                     </Typography>
                     <Typography variant="body2" color="textSecondary" align="left">
-                    Last Updated on December 12, 2024
+                    Last Updated on December 30, 2024
                     </Typography>
 
                     <Divider sx={{ margin: '20px 0' }} />
 
                     <Typography variant="h4" fontWeight={700} gutterBottom>
-        Welcome to <span style={{ color: "#1976d2" }}>P2 Music Shop</span>!
+        Welcome to <span style={{ color: "#1976d2" }}>penskart</span>!
       </Typography>
       <Typography variant="body1" fontSize={18} lineHeight={1.6}>
-        By accessing or using our website at{" "}
-        <a href="https://www.p2musicshop.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "none" }}>
-          www.p2musicshop.com
+        By accessing or using our website at{"https://www.penskart.com/ "}
+        <a href="https://www.penskart.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "none" }}>
+        www.penskart.com
         </a>
         we strive to ensure your satisfaction with our products. However, if you need to cancel an order or request a refund, please review our policy below:
       </Typography>
@@ -31,8 +31,8 @@ export default function RefundAndCancellation() {
 
                     <Typography variant="h6" fontSize={18} fontWeight={600}> Order Cancellation</Typography>
                     <Typography variant="body1" paragraph>
-                    **Before Shipping**: You can cancel your order before it is shipped by contacting us at **support@p2musicshop.com** or calling **+919787787796**. A full refund will be processed to your original payment method.<br /> 
-                    **After Shipping**: Orders cannot be canceled once they have been shipped. You may initiate a return once the product is delivered.
+                    Before Shipping: You can cancel your order before it is shipped by contacting us at penskart@gmail.com or calling **+919787787796**. A full refund will be processed to your original payment method.<br /> 
+                    After Shipping: Orders cannot be canceled once they have been shipped. You may initiate a return once the product is delivered.
                     </Typography>
 
                     <Divider sx={{ margin: '20px 0' }} />         
@@ -84,7 +84,7 @@ export default function RefundAndCancellation() {
                         <Typography variant="h6" fontSize={18} fontWeight={600}> Damaged or Defective Items</Typography>
                     <Typography variant="body1" paragraph>
                     <Typography variant="body1" paragraph>If you receive a damaged or defective item:</Typography>
-                    Contact us within  3 days of receiving the item at p2musicshop@gmail.com.com or **+919787787796** with photos or videos of the damage.<br /> 
+                    Contact us within  3 days of receiving the item at p2musicshop@gmail.com.com or +919894820412 with photos or videos of the damage.<br /> 
                     We will arrange for a replacement or refund after verification.
 
                     </Typography>
@@ -104,12 +104,12 @@ export default function RefundAndCancellation() {
                     <Typography variant="body1" paragraph>
         
  <Typography variant="body1" fontWeight={600}>
-  Email: p2musicshop@gmail.com
+  Email:penskart@gmail.com
 </Typography>
 
 
 <Typography variant="body1" fontWeight={600}>
-  Phone: +919787787796
+  Phone: +919894820412
 </Typography>
 
 
