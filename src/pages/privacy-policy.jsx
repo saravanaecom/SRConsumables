@@ -11,19 +11,19 @@ export default function PrivacyPolicy() {
                         Privacy Policy
                     </Typography>
                     <Typography variant="body2" color="textSecondary" align="left">
-                        Last Updated on January 01, 2024
+                        Last Updated on January 01, 2025
                     </Typography>
 
                     <Divider sx={{ margin: '20px 0' }} />
 
 
                     <Typography variant="h4" fontWeight={700} gutterBottom>
-        Welcome to <span style={{ color: "#1976d2" }}>P2 Music Shop</span>!
+        Welcome to <span style={{ color: "#1976d2" }}>Penskart</span>!
       </Typography>
       <Typography variant="body1" fontSize={18} lineHeight={1.6}>
         By accessing or using our website at{" "}
-        <a href="https://www.p2musicshop.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "none" }}>
-          www.p2musicshop.com
+        <a href="https://www.penskart.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "none" }}>
+        www.penskart.com
         </a>
         we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or purchase our products.
       </Typography>
@@ -48,7 +48,7 @@ export default function PrivacyPolicy() {
                     Process your orders and transactions.<br />
                     Communicate with you regarding your purchases and provide customer support.<br />
                     Improve our website’s functionality and user experience.<br />
-                    Send promotional emails and marketing materials p2musicshop@gmail.com.<br />
+                    Send promotional emails and marketing materials <br />
                     Comply with legal obligations and safeguard against fraud.<br />
                     </Typography>
 
@@ -124,12 +124,12 @@ export default function PrivacyPolicy() {
                     <Typography variant="body1" paragraph>
                     If you have any questions or concerns about this Privacy Policy or our data practices, please contact us:
  <Typography variant="body1" fontWeight={600}>
-  Email:  p2musicshop@gmail.com
+  Email:  
 </Typography>
 
 
 <Typography variant="body1" fontWeight={600}>
-  Phone: +919787787796
+  Phone: +919894820412
 </Typography>
 
 
