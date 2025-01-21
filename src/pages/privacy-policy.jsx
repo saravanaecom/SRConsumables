@@ -124,7 +124,7 @@ export default function PrivacyPolicy() {
                     <Typography variant="body1" paragraph>
                     If you have any questions or concerns about this Privacy Policy or our data practices, please contact us:
  <Typography variant="body1" fontWeight={600}>
-  Email:  
+  Email:penskart@gmail.com
 </Typography>
 
 
