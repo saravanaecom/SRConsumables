@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Container,
@@ -19,7 +20,7 @@ import {
   Backdrop
 } from '@mui/material';
 import ProductCard from '../components/ProductCard';
-import { API_FetchOfferFastMovingProduct, API_FetchNewProduct, API_FetchProductIdMoreItems, API_FetchProductByCategory, API_FetchProductBySubCategory } from '../services/productListServices';
+import { API_FetchOfferFastMovingProduct, API_FetchNewProduct, API_FetchProductIdMoreItems, API_FetchProductByCategory, API_FetchProductBySubCategory,API_FetchBrand } from '../services/productListServices';
 import { API_FetchCategorySubCategory } from '../services/categoryServices';
 import { ImagePathRoutes } from '../routes/ImagePathRoutes';
 import { styled } from '@mui/system';
@@ -65,6 +66,10 @@ const ProductList = () => {
   const [Multipleitems, setMultipleitems] = useState(1);
   const [Startindex, setStartindex] = useState(0);
   const [PageCount, setPageCount] = useState(1);
+  const [brands, setBrands] = useState([]);
+  const [fullProductList,setFullProductList]=useState([])
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  
   const [productFilterName, setProductFilterName] = useState('All products');
 
 
@@ -112,7 +117,6 @@ const ProductList = () => {
       return [];
     }
   };
-
   const GetProductLists = async (categoryId, Multipleitems, Startindex, PageCount) => {
     try {
       setLoading(true);
@@ -164,7 +168,13 @@ const ProductList = () => {
         setBackdropOpen(true);
         setProductLists([]);
         const productLists = await API_FetchProductBySubCategory(SubCategoryId, Multipleitems, Startindex, PageCount);
+        setFullProductList(productLists); 
         setProductLists(productLists);
+        const uniqueBrands = Array.from(
+          new Set(productLists.map(product => product.Brandname).filter(Boolean))
+        );
+        setBrands(uniqueBrands);
+
         setLoading(false);
         setBackdropOpen(false);
       }
@@ -173,6 +183,22 @@ const ProductList = () => {
       setLoading(false);
       setBackdropOpen(false);
       setProductLists([]);
+    }
+  };
+
+  
+  const handleBrandChange = (event) => {
+    const selectedBrandId = event.target.value;
+    setSelectedBrand(selectedBrandId);
+  
+    if (selectedBrandId === "All brands") {
+      setProductLists(fullProductList);
+    } else {
+      
+      const filteredProducts = fullProductList.filter(
+        product => product.Brandname === selectedBrandId
+      );
+      setProductLists(filteredProducts);
     }
   };
 
@@ -247,6 +273,7 @@ const ProductList = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [productLists, loading, PageCount]);
+
 
 
   return (
@@ -366,28 +393,113 @@ const ProductList = () => {
       {/* Right-side Content Area */}
       <Grid item xs={12} md={offerProducts === null && relatedProducts === null && newProducts === null ? 10 : 12}  sx={{ p:3 }}>
         <Grid container sx={{ px: { xs: 0, md: 0 }, justifyContent: "flex-start", gap: "0px 18px" }}>
-          <Box sx={{ width: '100%', display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography sx={{ py: { xs: 1, md: 3 }, fontSize: { xs: 20, md: 28 }, fontFamily: "inherit", fontWeight: 600, color: '#F44336' }} variant="h4">
-              {activeCategory ? activeCategory : subCategoryName}
-            </Typography>
-            <Box sx={{ minWidth: { xs: 100, md: 250 } }}>
-              <FormControl fullWidth>
-                <Select
-                  id="productFilter"
-                  value={productFilterName}
-                  size="small"
-                  sx={{ textAlign: "left" }}
-                  onChange={handleProductFilterChange}
-                >
-                  <MenuItem value={"All products"}>All products</MenuItem>
-                  <MenuItem value={"Price(Low > High)"}>Price(Low to High)</MenuItem>
-                  <MenuItem value={"Price(High > Low)"}>Price(High to Low)</MenuItem>
-                  <MenuItem value={"Alphabetical"}>Alphabetical</MenuItem>
-                  <MenuItem value={"Alphabetical Reverse"}>Alphabetical Reverse</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </Box>
+     {/* update by for brand search start  */}
+             
+
+
+
+
+
+       {/* update by   for brand search end  */}
+         
+       <Box
+  sx={{
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }}
+>
+  {/* Title Section */}
+  <Typography
+    sx={{
+      fontSize: { xs: 20, md: 28 },
+      fontFamily: "inherit",
+      fontWeight: 600,
+      color: "#F44336",
+      textAlign: { xs: "center", md: "left" },
+    }}
+    variant="h4"
+  >
+    {activeCategory || subCategoryName}
+  </Typography>
+
+  {/* Filters Section */}
+  <Box
+    sx={{
+      width: { xs: "100%", md: "auto" },
+      display: "flex",
+      flexDirection: { xs: "column", md: "row" },
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: { xs: 2, md: 5 },
+      mb: 6, // Margin bottom for spacing
+    }}
+  >
+    {/* Brand Filter */}
+    <Box
+  sx={{
+    minWidth: { xs: "100%", md: 250 },
+    maxWidth: "100%",
+  }}
+>
+  {loading ? (
+    <CircularProgress size={24} sx={{ display: "block", mx: "auto" }} />
+  ) : (
+    <FormControl fullWidth>
+      <Select
+        id="brandFilter"
+        value={selectedBrand}
+        size="small"
+        sx={{
+          textAlign: "left",
+          backgroundColor: "white",
+          borderRadius: "4px",
+        }}
+        onChange={handleBrandChange}
+      >
+        <MenuItem value="All brands">All brands</MenuItem>
+        {brands.map((brand, index) => (
+          <MenuItem key={index} value={brand}>
+            {brand}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )}
+</Box>
+
+    {/* Product Filter */}
+    <Box
+      sx={{
+        minWidth: { xs: "100%", md: 250 },
+        maxWidth: "100%",
+      }}
+    >
+      <FormControl fullWidth>
+        <Select
+          id="productFilter"
+          value={productFilterName}
+          size="small"
+          sx={{
+            textAlign: "left",
+            backgroundColor: "white",
+            borderRadius: "4px",
+          }}
+          onChange={handleProductFilterChange}
+        >
+          <MenuItem value="All products">All products</MenuItem>
+          <MenuItem value="Price(Low > High)">Price (Low to High)</MenuItem>
+          <MenuItem value="Price(High > Low)">Price (High to Low)</MenuItem>
+          <MenuItem value="Alphabetical">Alphabetical</MenuItem>
+          <MenuItem value="Alphabetical Reverse">Alphabetical Reverse</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
+  </Box>
+</Box>
+
+
 
           {/* Render filtered product list */}
           <div className={offerProducts === null && relatedProducts === null && newProducts === null ? "grid h-full w-full grid-cols-2 content-start gap-x-3 overflow-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 pb-24 no-scrollbar" : "grid h-full w-full grid-cols-2 content-start gap-x-3 overflow-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 pb-24 no-scrollbar"}>

@@ -14,18 +14,18 @@ export default function TermsAndConditions() {
                         Terms and Conditions
                     </Typography>
                     <Typography variant="body2" color="textSecondary" align="left">
-                        Last Updated on December 12, 2024
+                        Last Updated on December 30, 2024
                     </Typography>
 
                     <Divider sx={{ margin: '20px 0' }} />
 
                     <Typography variant="h4" fontWeight={700} gutterBottom>
-                        Welcome to <span style={{ color: "#1976d2" }}>P2 Music Shop</span>!
+                        Welcome to <span style={{ color: "#1976d2" }}>Penskart</span>!
                     </Typography>
                     <Typography variant="body1" fontSize={18} lineHeight={1.6}>
                         By accessing or using our website at{" "}
-                        <a href="https://www.p2musicshop.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "none" }}>
-                            www.p2musicshop.com
+                        <a href="https://www.penskart.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "none" }}>
+                            www.penskart.com
                         </a>
                         , you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
                     </Typography>
@@ -87,10 +87,10 @@ export default function TermsAndConditions() {
                         If you have any questions about these Terms & Conditions, please contact us at:
                     </Typography>
                     <Typography variant="body1" fontWeight={600}>
-                        Email: p2musicshop@gmail.com
+                        Email:penskart@gmail.com
                     </Typography>
                     <Typography variant="body1" fontWeight={600}>
-                        Phone: +919787787796
+                        Phone: +919894820412
                     </Typography>
                 </Box>
       
