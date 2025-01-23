@@ -8,6 +8,8 @@ import ImageCategorySlider from "../components/slider/ImageCategorySlider";
 import OfferFastMovingProduct from "../components/slider/offerFastMovingProduct";
 import ProductByIndexPage from '../components/slider/productByIndexPage';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import CategoryCard from '../components/category/categoryhome';
+import ProductBycategory from '../components/slider/ProductByCategory';
 
 const ScrollSection = ({ children, direction = "up" }) => {
     const sectionRef = useRef(null);
@@ -36,7 +38,8 @@ const ScrollSection = ({ children, direction = "up" }) => {
                 x: translateX,
                 y: translateY,
                 perspective: "1000px",
-                marginBottom: "80px",
+                width: "100%",
+                
             }}
             transition={{
                 duration: 1.2,
@@ -77,12 +80,20 @@ export default function HomePage() {
 
     return (
         <>
+       <div
+        // style={{
+        // backgroundColor: "#053157", 
+        // minHeight: "100vh",         
+        //  }}
+>
             <Container
                 maxWidth="xl"
                 sx={{
                     overflow: "hidden",
                     perspective: "1000px",
-                    padding: "20px 16px",
+                    width: "100%",
+                    padding: 0,
+                   
                 }}
             >
                 {/* Hero Section */}
@@ -91,6 +102,7 @@ export default function HomePage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: "easeOut" }}
+                         style={{width:'100%'}}
                     >
                         <Banner />
                     </motion.div>
@@ -98,21 +110,37 @@ export default function HomePage() {
 
                 {/* Offer Products */}
                 <ScrollSection direction="left">
-                    <OfferFastMovingProduct />
+                <div style={{ width: "100%" }}>
+              <OfferFastMovingProduct />
+            </div>
                 </ScrollSection>
 
+
+
+                <div style={{ width: "100%" }}>
+            <CategoryCard />
+          </div>
+
+
                 {/* First Product Index */}
-            
-                    <ProductByIndexPage />
+                <div style={{ width: "100%" }}>
+            <ProductByIndexPage />
+          </div>
           
 
                 {/* Banner Slider */}
                
-                    <BannerSlider />
+                <div style={{ width: "100%" }}>
+            <BannerSlider />
+          </div>
             
+
+        
                 {/* Category Slider */}
           
-                    <ImageCategorySlider />
+                <div style={{ width: "100%" }}>
+            <ImageCategorySlider />
+          </div>
            
 
                 {/* Second Product Index */}
@@ -121,6 +149,12 @@ export default function HomePage() {
                 </ScrollSection> */}
 
                 {/* Scroll to Top Button */}
+               
+          
+                <div style={{ width: "100%" }}>
+            <ProductBycategory />
+          </div>
+               
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isVisible ? 1 : 0 }}
@@ -166,6 +200,7 @@ export default function HomePage() {
                     }}
                 />
             </Container>
+            </div>
         </>
     );
 }
