@@ -9,7 +9,7 @@ import OfferFastMovingProduct from "../components/slider/offerFastMovingProduct"
 import ProductByIndexPage from '../components/slider/productByIndexPage';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CategoryCard from '../components/category/categoryhome';
-import ProductBycategory from '../components/slider/ProductByCategory';
+import ProductBycategory from'../components/slider/ProductByCategory';
 
 const ScrollSection = ({ children, direction = "up" }) => {
     const sectionRef = useRef(null);
@@ -155,6 +155,8 @@ export default function HomePage() {
             <ProductBycategory />
           </div>
                
+
+     
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isVisible ? 1 : 0 }}
