@@ -12,13 +12,13 @@ const AppFooter = ({ CompanyDetails }) => {
     const theme = useTheme();
     return (
         <>
-            <Box sx={{ background: "#222", padding: '50px 20px' }}>
+            <Box sx={{ background: "#002134", padding: '50px 20px' }}>
                 <Container maxWidth="xl" sx={{ px: { xs: 0, md: 3 } }}>
                     <Grid container justifyContent="space-between" alignItems="flex-start">
                         {/* Left section */}
                         <Grid item xs={12} sm={12} md={3}>
                             <Box display="flex" flexDirection="column" alignItems="flex-start">
-                                <Box sx={{ background: theme.palette.whitecolorCode.main, borderRadius: 1 }}>
+                                <Box >
                                     <AppLogo />
                                 </Box>
                                 <Box display="flex" gap={2} sx={{ py: 3, justifyContent: 'center' }}>
@@ -43,7 +43,7 @@ const AppFooter = ({ CompanyDetails }) => {
    
     </Box>
                                 <Typography variant="caption" sx={{ fontSize:'16px', color: theme.palette.footertextcolorCode.main }}>
-                                    ©SRConsumables
+                                    ©Penskart
                                 </Typography>
                             </Box>
                         </Grid>
