@@ -124,12 +124,14 @@ export default function AppHeader() {
         position={isScrolled ? 'sticky' : 'relative'}
         color="transparent"
         elevation={isScrolled ? 7 : 0}
+
         sx={{
           borderBottom: isScrolled ? 'none' : '1px solid #ddd',
-          backgroundColor: isScrolled ? '#FFF' : '#FFF',
+          backgroundColor: isScrolled ? '#002134' : '#002134',
           transition: 'all 1.5s ease',
           zIndex: 9,
           top: 0,
+          height: '80px',
           '@media (max-width: 600px)': {
             position: 'relative',
             width: '100%',
@@ -140,7 +142,7 @@ export default function AppHeader() {
           <Grid container alignItems="center" justifyContent="space-between">
 
             {/* Logo Section */}
-            <Grid item xs={6} sm={3} md={2}>
+            <Grid item xs={6} sm={2} md={2}  sx={{ position: 'relative', left: '90px' }}>
               <Link to={"/"}> <AppLogo /></Link>
             </Grid>
 
@@ -160,6 +162,7 @@ export default function AppHeader() {
                 alignItems: 'center',
                 mt: { xs: 1, sm: 0 },
                 position: 'relative', // Remove fixed positioning for mobile
+                left:'50px',
                 width: '100%',
                 zIndex: 9,
               }}
@@ -168,10 +171,10 @@ export default function AppHeader() {
             </Grid>
 
             {/* Navigation and User Action Section */}
-            <Grid item xs={6} sm={3} md={5} sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '30px' }}>
-              <Button sx={{ color: '#333', textTransform: 'none', display: { xs: 'none', md: 'block' } }}>
+            <Grid item xs={6} sm={3} md={5} sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '30px',position: 'relative', right: '200px', }}>
+              <Button sx={{ color: '#FFF', textTransform: 'none', display: { xs: 'none', md: 'block' } }}>
                 <Typography component={"p"} sx={{ fontFamily: 'inherit', fontWeight: 600 }}>WhatsApp Only<br />
-                <span style={{fontSize: 14}}>{ServerURL.COMPANY_MOBILE}</span>
+                <span style={{fontSize: 14}}>+919894820412</span>
                 </Typography>
               </Button>
               <Button sx={{ color: '#333', fontWeight: 600, fontFamily: 'inherit', textTransform: 'none', display: { xs: 'none', md: 'none' } }}><Link to={"/"}>Home</Link></Button>
@@ -179,7 +182,7 @@ export default function AppHeader() {
                 <>
                   <Button
                     id={"register_btn"}
-                    sx={{ color: '#333', textTransform: 'none' }}
+                    sx={{ color: '#FFF', textTransform: 'none' }}
                     onClick={handleAuthDrawerToggle}
                   >
                     <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}>Register</Typography>
@@ -187,7 +190,7 @@ export default function AppHeader() {
 
                   <Button
                     id={"login_btn"}
-                    sx={{ color: '#333', textTransform: 'none' }}
+                    sx={{ color: '#FFF', textTransform: 'none' }}
                     onClick={handleAuthDrawerToggle}
                   >
                     <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}>Sign In</Typography>
@@ -199,7 +202,7 @@ export default function AppHeader() {
               {isAuthenticated && (
                 <Button
                   id={"profile_btn"}
-                  sx={{ color: '#333', textTransform: 'none' }}
+                  sx={{ color: '#FFF', textTransform: 'none' }}
                 >
                   <PersonIcon sx={{ ml: 1 }} />
                   <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}><Link to={"/myaccount"}>{isAuthenticatedName !== '' ? isAuthenticatedName : 'Profile'}</Link></Typography>
@@ -213,7 +216,7 @@ export default function AppHeader() {
                       color: theme.palette.footertextcolorCode.main
                     },
                   }}>
-                  <ShoppingBagIcon />
+                <ShoppingBagIcon sx={{ color: "white" }} />
                 </Badge>
               </IconButton>
             </Grid>
