@@ -142,7 +142,7 @@ export default function AppHeader() {
           <Grid container alignItems="center" justifyContent="space-between">
 
             {/* Logo Section */}
-            <Grid item xs={6} sm={2} md={2}  sx={{ position: 'relative', left: '90px' }}>
+            <Grid item xs={6} sm={2} md={2} >
               <Link to={"/"}> <AppLogo /></Link>
             </Grid>
 
@@ -171,7 +171,7 @@ export default function AppHeader() {
             </Grid>
 
             {/* Navigation and User Action Section */}
-            <Grid item xs={6} sm={3} md={5} sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '30px',position: 'relative', right: '200px', }}>
+            <Grid item xs={6} sm={3} md={5} sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '30px' }}>
               <Button sx={{ color: '#FFF', textTransform: 'none', display: { xs: 'none', md: 'block' } }}>
                 <Typography component={"p"} sx={{ fontFamily: 'inherit', fontWeight: 600 }}>WhatsApp Only<br />
                 <span style={{fontSize: 14}}>+919894820412</span>
