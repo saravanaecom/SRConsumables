@@ -297,10 +297,14 @@ const ProductList = () => {
                 boxSizing: 'border-box',
                 position: "relative",
                 background: 'rgba(255, 255, 255, 0.6)',
+                display: 'flex',  
+                flexDirection: 'column',
+                height: '100vh', 
+                overflowY: 'auto', 
               },
             }}
           >
-            <List>
+            <List  sx={{ overflowY: 'auto', height: 'calc(100vh - 64px)' }}>
               {subcategories.map((category, index) => (
                 <ListItem
                   button
