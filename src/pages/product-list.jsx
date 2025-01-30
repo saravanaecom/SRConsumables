@@ -285,7 +285,7 @@ const ProductList = () => {
     <Grid container>
       {/* Left-side Drawer for larger screens */}
       {(offerProducts === null && relatedProducts === null && newProducts === null) && (
-        <Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' }, zIndex: 10 }} style={{ position: 'sticky', top: 0, height: '100vh' }}>
+        <Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' }, zIndex: 10 }} style={{ position: 'sticky', top: 80, height: '100vh' }}>
           <Drawer
             variant="permanent"
             sx={{
@@ -304,7 +304,7 @@ const ProductList = () => {
               },
             }}
           >
-            <List  sx={{ overflowY: 'auto', height: 'calc(100vh - 64px)' }}>
+            <List sx={{ overflowY: 'auto', height: 'calc(100vh - 64px)' }}  >
               {subcategories.map((category, index) => (
                 <ListItem
                   button
