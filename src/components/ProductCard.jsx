@@ -294,7 +294,7 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
             component="img"
             onClick={handleProductClick}
             image={newProducts === 'new_product' ? ImagePathRoutes.ProductDetailsImagePath + product.Img0 : ImagePathRoutes.ProductImagePath + product.Img0}
-            onError={(e) => e.target.src = "https://t3.ftcdn.net/jpg/05/11/01/02/360_F_511010254_pVaBHjs5DooDMPkCPrC4Pw2C39cfhyOa.jpg"}
+            onError={(e) => e.target.src = "https://skala.or.id/wp-content/uploads/2024/01/dummy-post-square-1-1.jpg"}
             alt={product.Description}
             className="card-media"
             sx={{
