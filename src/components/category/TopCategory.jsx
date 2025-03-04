@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Tabs from '@mui/material/Tabs';
@@ -15,9 +15,7 @@ import { useTheme } from '@mui/material/styles';
 import AllCategories from '../../assets/All-categories.png';
 import TopOffers from '../../assets/top-offers.png';
 import NewProducts from '../../assets/new-products.png';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-gsap.registerPlugin(ScrollTrigger);
+
 const TopCategory = (props) => {
   const [categoryValue, setCategoryValue] = useState(null);
   const [categoryLists, setCategoryLists] = useState([]); 
@@ -26,17 +24,12 @@ const TopCategory = (props) => {
   const location = useLocation();
   const theme = useTheme();
   const [isActiveCategory, setIsActiveCategory] = React.useState(false); 
-  const containerRef = useRef(null);
-  const tabsRef = useRef([]);
+
   const handleCategoryClickChange = (event, newValue) => {
     const selectedCategoryId = event.currentTarget.id; 
     setCategoryValue(newValue); 
     navigate(`/product-list?pcid=${btoa(selectedCategoryId)}&pcname=${btoa(newValue)}`);
   };
-
-
-  //extra animation code 
-  
 
   function handleViewBtnClick (id, value){
     if(id !== 'all_categories'){
@@ -89,17 +82,18 @@ const TopCategory = (props) => {
   }, [props.get_catgory_lists]);
 
   return (
-    <Box sx={{ maxWidth: "100%", bgcolor: 'background.paper' }}>
+    <Box sx={{ maxWidth: "100%", overflowX: 'auto',bgcolor: 'background.paper' }}>
       <Container
         maxWidth={{ xs: false, sm: 'xl' }}
-        sx={{ pt: 2, pb: 2, p: { xs: 0, sm: 0 } }}
+        sx={{ pt: 2, pb: 2, p: { xs: 0, sm: 0 } , overflowX: 'auto' }}
       >
         <Tabs
           value={categoryValue}
           onChange={handleCategoryClickChange}
           variant="scrollable"
-          scrollButtons={true}
+          scrollButtons="auto"
           aria-label="scrollable prevent tabs example"
+          
           sx={{
             '.MuiTabs-indicator': {
               backgroundColor: theme.palette.basecolorCode.main,
@@ -123,7 +117,7 @@ const TopCategory = (props) => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Avatar
                   src={AllCategories}
-                  sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px #fff9fb` }}
+                  sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
                 />
                 <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main}}>
                   All Categories
@@ -132,7 +126,7 @@ const TopCategory = (props) => {
             }
           />
 
-          {/* <Tab
+          <Tab
             sx={{
               cursor: "pointer",
               '&.Mui-selected': {
@@ -155,9 +149,9 @@ const TopCategory = (props) => {
                 </Typography>
               </Box>
             }
-          /> */}
+          />
 
-          {/* <Tab
+          <Tab
             sx={{
               cursor: "pointer",
                '&.Mui-selected': isActiveCategory ? {
@@ -180,7 +174,7 @@ const TopCategory = (props) => {
                 </Typography>
               </Box>
             }
-          /> */}
+          />
 
           {/* Dynamically loaded category list */}
           {isLoading ? (
@@ -209,11 +203,12 @@ const TopCategory = (props) => {
                 key={index}
                 id={item.Id}
                 value={item.Category}
+                onClick={(event) => handleCategoryClickChange(event, item.Id)}
                 label={
                   <Box id={item.Id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Avatar
                       src={ImagePathRoutes.CategoryImagePath + item.ImagePath}
-                      sx={{ width: 55, height: 55, mb: 0.5,  }}
+                      sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
                       alt={item.Category}
                     />
                     <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main }}>
