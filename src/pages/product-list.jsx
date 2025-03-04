@@ -25,6 +25,8 @@ import { API_FetchCategorySubCategory } from '../services/categoryServices';
 import { ImagePathRoutes } from '../routes/ImagePathRoutes';
 import { styled } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
+import AllCategory from '../assets/alc.jpg';
+//import PlayStrore from '../../D:\KarthikWorkSpace\ReactProject\treeandleef\ecommercev7_frontend-main\src\assets\alc.jpg';
 
 const drawerWidth = 240;
 
@@ -68,7 +70,7 @@ const ProductList = () => {
   const [PageCount, setPageCount] = useState(1);
   const [brands, setBrands] = useState([]);
   const [fullProductList,setFullProductList]=useState([])
-  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState("All brands");
   
   const [productFilterName, setProductFilterName] = useState('All products');
 
@@ -83,7 +85,7 @@ const ProductList = () => {
     }
   };
   
-
+   
   const handleSubCategoryClick = (subCategoryName, SubCategoryId) => {
     setSubCategoryId(SubCategoryId);
     navigate(`/product-list?pcid=${btoa(atob(categoryId))}&pcname=${btoa(atob(categoryName))}&pscid=${btoa(SubCategoryId)}&pscname=${subCategoryName}`);
@@ -106,7 +108,7 @@ const ProductList = () => {
         setLoading(false);
         setBackdropOpen(false);
 
-        const allProductsCategory = { SubCategory: 'All Products' };
+        const allProductsCategory = { SubCategory: 'All Products'};
         setSubcategories([allProductsCategory, ...subcategories]);
         return subcategories;
       }
@@ -188,6 +190,9 @@ const ProductList = () => {
 
   
   const handleBrandChange = (event) => {
+
+
+
     const selectedBrandId = event.target.value;
     setSelectedBrand(selectedBrandId);
   
@@ -202,32 +207,81 @@ const ProductList = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const queryParams = new URLSearchParams(location.search);
+  //   const encodedId = queryParams.get('pcid');
+  //   const encodedName = queryParams.get('pcname');
+  //   const encodedSId = queryParams.get('pscid');
+  //   const encodedSName = queryParams.get('pscname');
+  //   setCategoryId(decodeURIComponent(encodedId));
+  //   setCategoryName(decodeURIComponent(encodedName));
+  //   setSubCategoryId(decodeURIComponent(encodedSId));
+  //   setSubCategoryName(decodeURIComponent(encodedSName));
+  //   if(atob(encodedId) !== 'new_product'){
+  //     GetCategoryBySubCategory(atob(encodedId));
+  //   }    
+
+  //   if (decodedSId) {
+  //     setActiveCategory(decodedSName); // Set active category to pscname (e.g., "SUGAR")
+  //     GetProductListsBySubCategory(atob(encodedSId), Multipleitems, Startindex, PageCount);
+  //   } else {
+  //     setActiveCategory("All Products");
+  //     GetProductLists(atob(encodedId), Multipleitems, Startindex, PageCount);
+  //   }
+
+
+  //   if (encodedSId === null) {
+  //     setActiveCategory("All Products");
+  //     GetProductLists(atob(encodedId), Multipleitems, Startindex, PageCount);
+  //   }
+  //   if (encodedSName === 'All%20Products') {
+  //     setActiveCategory("All Products");
+  //     GetProductLists(atob(encodedId), Multipleitems, Startindex, PageCount);
+  //   }
+  //   //eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [location.search, categoryId, categoryName, Multipleitems, Startindex, PageCount]);
+  
+
+
+  /// complete my ise effect 
+
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const encodedId = queryParams.get('pcid');
     const encodedName = queryParams.get('pcname');
     const encodedSId = queryParams.get('pscid');
     const encodedSName = queryParams.get('pscname');
-    setCategoryId(decodeURIComponent(encodedId));
-    setCategoryName(decodeURIComponent(encodedName));
-    setSubCategoryId(decodeURIComponent(encodedSId));
-    setSubCategoryName(decodeURIComponent(encodedSName));
-    if(atob(encodedId) !== 'new_product'){
-      GetCategoryBySubCategory(atob(encodedId));
-    }    
-
-
-    if (encodedSId === null) {
-      setActiveCategory("All Products");
-      GetProductLists(atob(encodedId), Multipleitems, Startindex, PageCount);
-    }
-    if (encodedSName === 'All%20Products') {
-      setActiveCategory("All Products");
-      GetProductLists(atob(encodedId), Multipleitems, Startindex, PageCount);
-    }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search, categoryId, categoryName, Multipleitems, Startindex, PageCount]);
   
+    const decodedId = encodedId ? decodeURIComponent(encodedId) : null;
+    const decodedName = encodedName ? decodeURIComponent(encodedName) : null;
+    const decodedSId = encodedSId ? decodeURIComponent(encodedSId) : null;
+    const decodedSName = encodedSName ? decodeURIComponent(encodedSName) : null;
+  
+    setCategoryId(decodedId);
+    setCategoryName(decodedName);
+    setSubCategoryId(decodedSId);
+    setSubCategoryName(decodedSName);
+  
+    if (atob(encodedId) !== 'new_product') {
+      GetCategoryBySubCategory(atob(encodedId));
+    }
+  
+    // ✅ Correctly setting active category
+    if (decodedSId) {
+      setActiveCategory(decodedSName); // Set active category to pscname (e.g., "SUGAR")
+      GetProductListsBySubCategory(atob(encodedSId), Multipleitems, Startindex, PageCount);
+    } else {
+      setActiveCategory("All Products");
+      GetProductLists(atob(encodedId), Multipleitems, Startindex, PageCount);
+    }
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search, categoryId, categoryName, Multipleitems, Startindex, PageCount]);
+
+
+
+
 
   // Function to filter products based on the selected option
   const handleProductFilterChange = (event) => {
@@ -241,22 +295,27 @@ const ProductList = () => {
 
     switch (productFilterName) {
       case "Price(Low > High)":
-        sortedProducts.sort((a, b) => a.price - b.price);
+        sortedProducts.sort((a, b) => a.Price - b.Price);
         break;
       case "Price(High > Low)":
-        sortedProducts.sort((a, b) => b.price - a.price);
+        sortedProducts.sort((a, b) => b.Price - a.Price);
         break;
-      case "Alphabetical":
-        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+      case "A-Z":
+        sortedProducts.sort((a, b) => a.Description.localeCompare(b.Description));
         break;
-      case "Alphabetical Reverse":
-        sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+      case "Z-A":
+        sortedProducts.sort((a, b) => b.Description.localeCompare(a.Description));
+        break;
+
+        case "All products":
+        sortedProducts.sort((a, b) => b.Description.localeCompare(a.Description));
         break;
       default:
         sortedProducts = [...productLists];
     }
-
-    setFilteredProductLists(sortedProducts);
+     
+  
+    setProductLists(sortedProducts);
   }, [productFilterName, productLists]);
 
   useEffect(() => {
@@ -333,7 +392,7 @@ const ProductList = () => {
                       backgroundColor: '#f7f0fa',
                       marginRight: 10,
                     }}
-                    src={category.ImagePath ? ImagePathRoutes.SubCategoryImagePath + category.ImagePath : "https://www.healthysteps.in/categoryimages/All-categories.png"}
+                    src={category.ImagePath ? ImagePathRoutes.SubCategoryImagePath + category.ImagePath : AllCategory}
                   />
                   <ListItemText
                     primary={category.SubCategory}
@@ -393,17 +452,10 @@ const ProductList = () => {
           </Drawer>
         </Grid>
       )}
-
       {/* Right-side Content Area */}
       <Grid item xs={12} md={offerProducts === null && relatedProducts === null && newProducts === null ? 10 : 12}  sx={{ p:3 }}>
         <Grid container sx={{ px: { xs: 0, md: 0 }, justifyContent: "flex-start", gap: "0px 18px" }}>
      {/* update by for brand search start  */}
-             
-
-
-
-
-
        {/* update by   for brand search end  */}
          
        <Box
@@ -441,37 +493,40 @@ const ProductList = () => {
     }}
   >
     {/* Brand Filter */}
-    <Box
-  sx={{
-    minWidth: { xs: "100%", md: 250 },
-    maxWidth: "100%",
-  }}
->
-  {loading ? (
-    <CircularProgress size={24} sx={{ display: "block", mx: "auto" }} />
-  ) : (
-    <FormControl fullWidth>
-      <Select
-        id="brandFilter"
-        value={selectedBrand}
-        size="small"
-        sx={{
-          textAlign: "left",
-          backgroundColor: "white",
-          borderRadius: "4px",
-        }}
-        onChange={handleBrandChange}
-      >
-        <MenuItem value="All brands">All brands</MenuItem>
-        {brands.map((brand, index) => (
-          <MenuItem key={index} value={brand}>
-            {brand}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  )}
-</Box>
+    {activeCategory !== "All Products" && (
+  <Box
+    sx={{
+      minWidth: { xs: "100%", md: 250 },
+      maxWidth: "100%",
+    }}
+  >
+    {loading ? (
+      <CircularProgress size={24} sx={{ display: "block", mx: "auto" }} />
+    ) : (
+      <FormControl fullWidth>
+        <Select
+          id="brandFilter"
+          value={selectedBrand}
+          size="small"
+          sx={{
+            textAlign: "left",
+            backgroundColor: "white",
+            borderRadius: "4px",
+          }}
+          onChange={handleBrandChange}
+        >
+          <MenuItem value="All brands">All brands</MenuItem>
+          {brands.map((brand, index) => (
+            <MenuItem key={index} value={brand}>
+              {brand}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    )}
+  </Box>
+)}
+
 
     {/* Product Filter */}
     <Box
@@ -495,8 +550,8 @@ const ProductList = () => {
           <MenuItem value="All products">All products</MenuItem>
           <MenuItem value="Price(Low > High)">Price (Low to High)</MenuItem>
           <MenuItem value="Price(High > Low)">Price (High to Low)</MenuItem>
-          <MenuItem value="Alphabetical">Alphabetical</MenuItem>
-          <MenuItem value="Alphabetical Reverse">Alphabetical Reverse</MenuItem>
+          <MenuItem value="A-Z">A-Z</MenuItem>
+          <MenuItem value="Z-A">Z-A</MenuItem>
         </Select>
       </FormControl>
     </Box>
