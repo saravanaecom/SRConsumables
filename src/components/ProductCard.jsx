@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import * as actionType from '../redux/actionType';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
+import Productimg from '../assets/no-image.png';
 
 const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, relatedProducts, newProducts }) => {
   const navigate = useNavigate();
@@ -294,7 +295,6 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
             component="img"
             onClick={handleProductClick}
             image={newProducts === 'new_product' ? ImagePathRoutes.ProductDetailsImagePath + product.Img0 : ImagePathRoutes.ProductImagePath + product.Img0}
-            onError={(e) => e.target.src = "https://skala.or.id/wp-content/uploads/2024/01/dummy-post-square-1-1.jpg"}
             alt={product.Description}
             className="card-media"
             sx={{
@@ -366,6 +366,8 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
       )}
  
       <CardContent 
+
+      
        sx={{ 
         height: { xs: '50%', sm: '45%', md: '40%' },
         display: 'flex',
@@ -397,8 +399,8 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
       fontSize: '12px',
       fontWeight: 'bold',
       borderRadius: '4px',
-      padding:'4px 8px',
-      boxShadow:'0 2px 4px rgba(0, 0, 0, 0.1)',
+      padding: '4px 8px',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
       zIndex: 10,
     }}
   >
