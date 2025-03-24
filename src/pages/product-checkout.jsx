@@ -7,7 +7,7 @@ import { useCart } from '../context/CartContext';
 import { ServerURL } from '../server/serverUrl';
 import { ImagePathRoutes } from '../routes/ImagePathRoutes';
 import Calendar from '../components/datePicker';
-import { API_FetchDeliveryTimes } from '../services/settings';
+import { API_FetchDeliveryTimes,API_FetchSelectSettingsNew,API_Fetchpincode,API_Fetchdeliverycharges } from '../services/settings';
 import { API_InsertSaleOrderSave } from '../services/checkoutServices';
 import { useTheme } from '@mui/material/styles';
 import CircularLoader from '../components/circular-loader';
@@ -16,6 +16,7 @@ import OrderInfo from '../assets/information.gif';
 import AddressChangeModal from '../components/cart/addressChangeModal';
 import RazorpayPayment from '../components/RazorpayPayment';
 import dayjs from 'dayjs';
+import { getDistance } from 'geolib';
 
 const style = {
     position: 'absolute',
@@ -41,8 +42,11 @@ export default function ProductCheckout() {
     const [ExtraDiscount, setExtraDiscount] = React.useState(0);
     const [HandlingCharge, setHandlingCharge] = React.useState(0);
     const [DeliveryFee, setDeliveryFee] = React.useState(0);
+    const [pincodedata,setPincodedata] = React.useState([]);
     const [walletAmount, setwalletAmount] = React.useState(0);
     const [DeliveryTimeList, setDeliveryTimeList] = React.useState([]);
+    const [whatsapdata, setwhatsapdata] = React.useState([]);
+    
     const [DateValue, setDateValue] = React.useState(dayjs());
     const [DeliverytimeId, setDeliverytimeId] = React.useState(0);
     const [Deliverytime, setDeliverytime] = React.useState('');
@@ -54,10 +58,20 @@ export default function ProductCheckout() {
     const [InfoStatus, setInfoStatus] = React.useState('');
     const [loading, setLoading] = React.useState(false);
     const [showLoader, setShowLoader] = React.useState(false);
-
+    const [couponId, setCouponId] = React.useState(0);
+    const [couponDiscount, setCouponDiscount] =React.useState(0); 
+    const [discountAmount, setDiscountAmount] = React.useState(0);
+    const [pincodes, setPincodes] = React.useState([]);
     const [AlertOpen, setAlertOpen] = React.useState(false);
     const handleAlertOpen = () => setAlertOpen(true);
+    const [adminlatitude, setAdminlatitude] = React.useState('');
+    const [adminLangitude, setAdminLangitude] = React.useState('');
 
+    const [userlatitude, setUserlatitude] = React.useState('');
+    const [userLangitude, setuserLangitude] = React.useState('');
+    const [distance, setDistance] =  React.useState(0);
+    const [deliverychargelist,  setDeliverychargelist] = React.useState([]);
+    const [deliverycharge,  setDeliveryCharge] = React.useState([]);
     const handleAlertClose = () => {
         if (InfoStatus === 'Your order has been placed') {
             navigate('/');
@@ -82,6 +96,7 @@ export default function ProductCheckout() {
         }
     };
 
+
     const handleChangeAddressClose = () => {
         setModalOpen(false);
         let address = JSON.parse(sessionStorage.getItem('selectedAddress'));
@@ -98,40 +113,198 @@ export default function ProductCheckout() {
             console.error('Error fetching categories:', error);
         }
     };
+    const FetchSelectSettingsNew = async () => {
+        try {
 
+
+            const list = await API_FetchSelectSettingsNew();
+      
+    
+            if (Array.isArray(list) && list.length > 0) {
+                setwhatsapdata(list);
+                const firstItem = list[0];
+                setAdminlatitude(firstItem.Latitude);
+                console.log(adminlatitude)
+                setAdminLangitude(firstItem.Longitude);
+                  console.log(adminLangitude)
+                
+                
+            } else {
+                console.error("Fetched data is not a valid array or is empty.");
+                setwhatsapdata([]); 
+            }
+        } catch (error) {
+            setwhatsapdata([]);
+            console.error("Error fetching categories:", error);
+        }
+    };
+    
+             
+    const handleCalculateDistance = () => {
+     
+        setUserlatitude(selectedAddress.Latitude);
+        setuserLangitude( selectedAddress.Langitude);
+        const dist = getDistance(
+          { latitude: selectedAddress.Latitude, longitude: selectedAddress.Langitude },
+          { latitude:adminlatitude,longitude:adminLangitude }
+        );
+        const distInKilometers = dist / 1000;
+        setDistance(distInKilometers);
+        console.log(distInKilometers); 
+      };
+
+
+ const handlefetchdeliverycharges = async()=>{
+
+    try {
+        
+        const list = await API_Fetchdeliverycharges();
+        if (Array.isArray(list) && list.length > 0) {
+          
+            setDeliverychargelist(list);
+            
+        } else {
+            console.error("Fetched data is not a valid array or is empty.");
+ 
+        }
+
+    } catch (error) {
+
+        setDeliverychargelist([]);
+        console.error("Error fetching categories:", error);
+        
+    }
+
+      }
+
+
+      const findDeliveryCharge = () => {
+        const chargeData = deliverychargelist.find(item => 
+            distance >= item.StartKM && distance <= item.EndKM
+        );
+    
+        if (chargeData) {
+            setDeliveryCharge(chargeData.DeliveryCharges);
+            console.log(`Delivery Charge: ${chargeData.DeliveryCharges}`);
+        } else {
+            setDeliveryCharge(0);
+            console.log("No matching range found.");
+        }
+    };
+    
+    // Example: setting distance to 11 and finding delivery charge
+    React.useEffect(() => {
+        findDeliveryCharge();
+    }, [distance]); 
+
+
+
+    
+  
+
+    const FetchPincode = async () => {
+        try {
+            const list = await API_Fetchpincode();
+            if (Array.isArray(list) && list.length > 0) {
+                const extractedPincodes = list.map(item => item.pincode);
+                setPincodes(extractedPincodes);
+                console.log(pincodes);
+                setPincodedata(list); 
+        console.log(pincodedata)
+            } else {
+                console.error("Fetched data is not a valid array or is empty.");
+                setPincodedata([]); 
+            }
+        } catch (error) {
+            setPincodedata([]);
+            console.error("Error fetching categories:", error);
+        }
+    };
     useEffect(() => {
         FetchDeliveryTimes();
+        FetchSelectSettingsNew();
+        FetchPincode();
+        handlefetchdeliverycharges();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+     
+
+
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const encodedWalletAmount = queryParams.get('Wallet');
         let amt = atob(encodedWalletAmount);
-        //setwalletAmount(Number(amt));
-
+        // setwalletAmount(Number(amt));
+    
         let address = JSON.parse(sessionStorage.getItem('selectedAddress'));
-        setSelectedAddress(address);
+        setSelectedAddress(address); 
+    
+    }, [location.search]); 
+    
 
-    }, [location.search]);
-
+    useEffect(() => {
+        if (selectedAddress) {
+            handleCalculateDistance();
+        }
+    }, [selectedAddress,adminlatitude,adminLangitude]);
+    
     useEffect(() => {
         if (cartItems.length > 0) {
             const totalMRP = cartItems.reduce((acc, item) => acc + item.totalMRP, 0);
             const totalPrice = cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
-
+            
             setMRPAmount(totalMRP);
-            setTotalPrice(totalPrice);
+            setTotalPrice(totalPrice );
             setSavingsAmount(totalMRP - totalPrice);
-
+    
+            // 🏦 Apply Wallet Discount
             let useWallet = localStorage.getItem('UseWallet');
             if (useWallet) {
                 setTotalPrice((prevPrice) => prevPrice - walletAmount);
-            } else {
-                setTotalPrice(totalPrice);
+            }
+    
+            // 🏷️ Apply Coupon Discount
+            let DiscountData = localStorage.getItem("DiscountData");
+            if (DiscountData) {
+                try {
+                    const parsedData = JSON.parse(DiscountData);
+    
+                    
+                    const couponData = Array.isArray(parsedData) ? parsedData[0] : parsedData;
+                    
+                    if (couponData?.Id) {
+                        setCouponId(couponData.Id); 
+                    }
+
+
+
+
+                    if (couponData?.coupondiscount) {
+                      
+                        const discountPercent = parseFloat(couponData.coupondiscount.replace('%', ''));
+                        if (!isNaN(discountPercent)) {
+                            setCouponDiscount(discountPercent);
+                            const discountAmount = (discountPercent / 100) * totalPrice;
+                            setDiscountAmount(discountAmount);
+                            setTotalPrice((prevPrice) => prevPrice - discountAmount);
+                        }
+                    } else if (couponData?.discountValue) {
+                       
+                        const discountValue = parseFloat(couponData.discountValue);
+                        if (!isNaN(discountValue)) {
+                            setDiscountAmount(discountValue);
+                            setTotalPrice((prevPrice) => prevPrice - discountValue);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Failed to parse DiscountData:", error);
+                }
             }
         }
     }, [cartItems, walletAmount]);
+    
 
     //Delivery date function
     const handleSelectDate = (newValue) => {
@@ -185,10 +358,23 @@ export default function ProductCheckout() {
         }
     };
 
+
+      
+
+
+
     //Order save API function
-    const InsertSaleOrderSave = async(master) => {
+    const InsertSaleOrderSave = async (master) => {
         try {
-            const response = await API_InsertSaleOrderSave(master);
+            let WhatsAppUrl = "";
+            let OwnerMobileNo = "";
+            if (whatsapdata.length > 0) {
+                ({ WhatsAppUrl, OwnerMobileNo } = whatsapdata[0]);
+            }
+         //   const pincode1 = selectedAddress.Pincode.toString().trim();
+            const response = await API_InsertSaleOrderSave(master, WhatsAppUrl, OwnerMobileNo);
+            console.log(response);
+    
             if (response.length !== 0) {
                 setLoading(false);
                 localStorage.removeItem('cartItems');
@@ -196,8 +382,7 @@ export default function ProductCheckout() {
                 setInfoStatus('Your order has been placed');
                 setShowLoader(false);
                 handleAlertOpen(true);
-            }
-            else {
+            } else {
                 setLoading(false);
                 setInfoStatus('Your order has been rejected.');
                 setShowLoader(false);
@@ -210,7 +395,10 @@ export default function ProductCheckout() {
             setShowLoader(false);
             handleAlertOpen(true);
         }
+
+        
     };
+    
 
     const PlaceOrder = async(onlinePStatus, onlinePaymentId) => {
         setShowLoader(true);
@@ -222,7 +410,7 @@ export default function ProductCheckout() {
                 detailslist.ProductName = cartItems[i].Description;
                 detailslist.MRP = cartItems[i].MRP;
                 detailslist.ItemQty = cartItems[i].item;
-                detailslist.DiscountAmt = (Number(cartItems[i].MRP) * 0) / 100;
+                detailslist.DiscountAmt = discountAmount;
                 detailslist.Salerate = cartItems[i].Price;
                 detailslist.WeightType = cartItems[i].UnitType;
                 detailslist.CPrice = cartItems[i].totalPrice;
@@ -244,12 +432,10 @@ export default function ProductCheckout() {
                 Pincode: selectedAddress.Pincode,
                 lattitude: selectedAddress.Latitude,
                 longitude: selectedAddress.Langitude,
-
                 CompanyRefid: selectedAddress.CompanyRefId,
                 CompanyName: ServerURL.COMPANY_NAME,
                 CompanyMobile: ServerURL.COMPANY_MOBILE,
                 CompanyEmail: ServerURL.COMPANY_EMAIL,
-                
                 SaleDate: DateValue,
                 DeliveryDate: DateValue,
                 DeliveryTime: Deliverytime, 
@@ -261,33 +447,36 @@ export default function ProductCheckout() {
                 DeliveryStatus: 0,                
                 NewCustomerStatus: 0,
                 CouponDiscount: 0.0,
-                CouponRefId: 0,
+                CouponRefId:couponId,
                 OrderCount: 1,
                 ReferalAmount: 0.0,                
-                disper: 0,
-                discamount: 0,
-                schargeamount: 0,                
+                disper:Number(couponDiscount),
+                discamount:Number(discountAmount),
+                schargeamount: deliverycharge,                
                 ReferalBalance: 0,
                 coinage: 0,
-                DeliveryCharge: DeliveryFee,
+                DeliveryCharge: deliverycharge,
                 WalletAmount: walletAmount,
                 WalletStatus: walletAmount > 0 ? 1 : 0,
                 WalletPayment: walletAmount,                
                 TodaySaving: SavingsAmount,
                 Grossamt: Number(TotalPrice),
-                NetAmount: Number(TotalPrice), //Final Total Amount                                 
+                NetAmount: Number(TotalPrice) + Number(deliverycharge),                                 
                 SaleOrderDetails: OrderDetails,     
                 Remarks: "",                    
             },
         ];
+       
         await InsertSaleOrderSave(master);
+
+    
     };
 
     return (
         <>
             <CircularLoader showLoader={showLoader} />
             {OnlinePayment && (
-                <RazorpayPayment PlaceOrder={InsertSaleOrderSave} OnlinePayment={OnlinePayment} payableamount={(TotalPrice + DeliveryFee + HandlingCharge - ExtraDiscount)} usedwalledamount={walletAmount} Customer={selectedAddress}/>
+                <RazorpayPayment PlaceOrder={PlaceOrder} OnlinePayment={OnlinePayment} payableamount={(TotalPrice + deliverycharge + HandlingCharge - ExtraDiscount)} usedwalledamount={walletAmount} Customer={selectedAddress}/>
             )}
             <AddressChangeModal UserId={UserId} setUserId={setUserId} ModalOpen={ModalOpen} handleChangeAddressClose={handleChangeAddressClose} handleAddressSelect={handleChangeAddress} />
             <Modal
@@ -554,12 +743,12 @@ export default function ProductCheckout() {
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={8} sx={{ display: 'none', mt: 0.5 }}>
+                                <Grid item xs={8} sx={{  mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">Delivery fee:</Typography>
                                 </Grid>
-                                <Grid item xs={4} sx={{ display: 'none', mt: 0.5 }}>
+                                <Grid item xs={4} sx={{  mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px' }} variant="body1" align="right">
-                                        {DeliveryFee.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {deliverycharge.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </Typography>
                                 </Grid>
 
@@ -568,7 +757,7 @@ export default function ProductCheckout() {
                                 </Grid>
                                 <Grid item xs={4} sx={{ mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px' }} variant="body1" align="right">
-                                        {(TotalPrice + DeliveryFee + HandlingCharge - ExtraDiscount).toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {(TotalPrice + deliverycharge + HandlingCharge - ExtraDiscount).toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </Typography>
                                 </Grid>
                             </Grid>

@@ -264,16 +264,35 @@ const ProductDetails = (props) => {
     const settings1 = {
         customPaging: function (index) {
             return (
-                <img style={{ width: '80px !important', height: '80px', objectFit: 'cover' }} src={imageLists[index] === '/productimages/Undefined.jpg' || imageLists[index] === '/productimages/Undefined.png' || imageLists[index] === null || imageLists[index] === '' ? NoImage : ImagePathRoutes.ProductImagePath + imageLists[index]} alt={imageLists[index] === '/productimages/Undefined.jpg' || imageLists[index] === '/productimages/Undefined.png' || "Product name is not available" + index + 1} />
+                <img
+                    style={{
+                        width: '80px',
+                        height: '80px',
+                        objectFit: 'cover',
+                    }}
+                    src={
+                        imageLists[index] === '/productimages/Undefined.jpg' ||
+                        imageLists[index] === '/productimages/Undefined.png' ||
+                        imageLists[index] === null ||
+                        imageLists[index] === ''
+                            ? NoImage
+                            : ImagePathRoutes.ProductImagePath + imageLists[index]
+                    }
+                    alt={
+                        imageLists[index] === '/productimages/Undefined.jpg' ||
+                        imageLists[index] === '/productimages/Undefined.png' ||
+                        'Product name is not available ' + (index + 1)
+                    }
+                />
             );
         },
         dots: true,
-        dotsClass: "slick-dots slick-thumb",
+        dotsClass: 'slick-dots slick-thumb',
         infinite: true,
         arrows: false,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
     };
 
     return (
@@ -295,11 +314,28 @@ const ProductDetails = (props) => {
             <Container maxWidth="lg" sx={{ my: 3 }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={5}>
-                        <Slider {...settings1}>
-                            {imageLists.map((image, index) => (
-                                <img style={{ width: '100%', height: '100px' }} src={ImagePathRoutes.ProductImagePath + image === '/productimages/Undefined.jpg' || ImagePathRoutes.ProductImagePath + image === '/productimages/Undefined.png' || ImagePathRoutes.ProductImagePath + image === null || ImagePathRoutes.ProductImagePath + image === '' ? NoImage : ImagePathRoutes.ProductImagePath + image} alt={productDetails.Description || "Product name is not available" + index + 1} />
-                            ))}
-                        </Slider>
+                    <Slider {...settings1}>
+    {imageLists.map((image, index) => (
+        <div key={index}>
+            <img
+                style={{
+                    width: '100%',
+                    height: 'auto', // Maintain aspect ratio
+                    objectFit: 'contain', // Ensure image is fully visible without distortion
+                }}
+                src={
+                    ImagePathRoutes.ProductImagePath + image === '/productimages/Undefined.jpg' ||
+                    ImagePathRoutes.ProductImagePath + image === '/productimages/Undefined.png' ||
+                    ImagePathRoutes.ProductImagePath + image === null ||
+                    ImagePathRoutes.ProductImagePath + image === ''
+                        ? NoImage
+                        : ImagePathRoutes.ProductImagePath + image
+                }
+                alt={productDetails.Description || "Product name is not available " + (index + 1)}
+            />
+        </div>
+    ))}
+</Slider>
                     </Grid>
                     <Grid item xs={12} sm={7}>
                         <Box>
