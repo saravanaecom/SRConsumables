@@ -218,7 +218,7 @@ export default function ProductCheckout() {
         } catch (error) {
             setPincodedata([]);
             console.error("Error fetching categories:", error);
-        }
+        } 
     };
     useEffect(() => {
         FetchDeliveryTimes();
