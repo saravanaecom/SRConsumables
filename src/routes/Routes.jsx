@@ -21,17 +21,22 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import ThemeSettings from '../theme/theme';
 import {ServerURL} from '../server/serverUrl';
+import LocationSelector from "../components/LocationSelector";
+import {LocationProvider} from '../components/context/LocationContext';
+
 
 function AppRouter() {
     let [themeLists, setThemeLists] = useState([]);
     const [isLoading, setIsLoading] = useState(true);    
     const theme = useTheme();    
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm', 'xs'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm', 'xs')); 
 
     useEffect(() => {
     FetchMySettings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+   
 
     const FetchMySettings = async () => {
         try {
@@ -43,6 +48,8 @@ function AppRouter() {
             ServerURL.COMPANY_MOBILE = objtheme.data[0].MobileNo1;            
             ServerURL.COMPANY_URL = objtheme.data[0].CompanyUrl;
             ServerURL.COMPANY_PAYMENT_RAZ_KEY = objtheme.data[0].PaymentId;
+            ServerURL.COMPANY_LATITUDE = objtheme.data[0].Latitude;
+            ServerURL.COMPANY_LONGITUDE = objtheme.data[0].Longitude;
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching order lists:", error);
@@ -62,9 +69,11 @@ function AppRouter() {
     };
 
     return (
+      
         <ThemeProvider theme={ThemeSettingsLists}>
             <CssBaseline />
             <Router>
+                <LocationProvider>
                 <AuthProvider>
                     <CartProvider>
                         <AppLayout CompanyDetails={themeLists}>
@@ -81,6 +90,7 @@ function AppRouter() {
                                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                                     <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                                     <Route path="/refund-and-cancellation" element={<RefundAndCancellation />} />
+                                    <Route path="/locationselector" element={<LocationSelector />} />
                                     {/* Catch-all Route for 404 */}
                                     <Route path="*" element={<Navigate to="/" replace />} />
                                 </Routes>
@@ -91,8 +101,11 @@ function AppRouter() {
                         )}
                     </CartProvider>
                 </AuthProvider>
+                </LocationProvider>
+              
             </Router>
         </ThemeProvider>
+      
     )
 };
 export default AppRouter;
