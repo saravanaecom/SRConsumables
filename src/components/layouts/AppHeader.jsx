@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect ,useContext} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, AppBar, Toolbar, Grid, IconButton, Button, Typography, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
@@ -15,9 +15,6 @@ import { useAuth } from '../../context/authContext';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '@mui/material/styles';
 import { ServerURL } from '../../server/serverUrl';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { useLocation } from '../../components/context/LocationContext';
-import {LocationContext} from '../context/LocationContext'
 
 const drawerContent = (
   <List>
@@ -40,9 +37,7 @@ const drawerContent = (
 );
 
 export default function AppHeader() {
-  const { location,setLocation } = useContext(LocationContext);
   const theme = useTheme();
-  
   const { isAuthenticated, setIsAuthenticated, isAuthenticatedName } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [registerDrawerOpen, setRegisterDrawerOpen] = useState(false);
@@ -52,14 +47,6 @@ export default function AppHeader() {
   const [cartItemsCount, setCartItemsCount] = useState(0);
   const {cartItems} = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
-  
-  
-
-
-
-
-
-
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen((open) => !open);
@@ -137,12 +124,14 @@ export default function AppHeader() {
         position={isScrolled ? 'sticky' : 'relative'}
         color="transparent"
         elevation={isScrolled ? 7 : 0}
+
         sx={{
           borderBottom: isScrolled ? 'none' : '1px solid #ddd',
-          backgroundColor: isScrolled ? '#FFF' : '#FFF',
+          backgroundColor: isScrolled ? '#002134' : '#002134',
           transition: 'all 1.5s ease',
           zIndex: 9,
           top: 0,
+          height: '80px',
           '@media (max-width: 600px)': {
             position: 'relative',
             width: '100%',
@@ -153,7 +142,7 @@ export default function AppHeader() {
           <Grid container alignItems="center" justifyContent="space-between">
 
             {/* Logo Section */}
-            <Grid item xs={6} sm={3} md={2}>
+            <Grid item xs={6} sm={2} md={2} >
               <Link to={"/"}> <AppLogo /></Link>
             </Grid>
 
@@ -167,12 +156,13 @@ export default function AppHeader() {
             {/* Search Bar Section */}
             <Grid
               item
-              xs={12} sm={6} md={4}
+              xs={12} sm={6} md={5}
               sx={{
                 display: { sm: 'inline-block' },
                 alignItems: 'center',
                 mt: { xs: 1, sm: 0 },
                 position: 'relative', // Remove fixed positioning for mobile
+                left:'50px',
                 width: '100%',
                 zIndex: 9,
               }}
@@ -180,53 +170,11 @@ export default function AppHeader() {
               <AppSearchBox/>              
             </Grid>
 
-            {/*working on the  location icon and  show the  loacation start */}
-            <Grid xs={12} sm={5} md={3}>
-              <Grid container alignItems="center">
-                {/* Icon on the Left */}
-                <Grid item>
-                  <Link to="/locationselector">
-                    <IconButton color="inherit">
-                      <LocationOnIcon sx={{ fontSize: 30, color: '#333' }} />
-                    </IconButton>
-                  </Link>
-                </Grid>
-
-                {/* Location Information on the Right */}
-                {location ? (
-                  <Grid item>
-                    <Grid container direction="row" spacing={1} alignItems="center" justifyContent="center">
-                      {/* City */}
-                      <Grid item>
-                        <Typography sx={{ fontSize: '14px', color: '#333', marginLeft: '10px' }}>
-                          {location.city}
-                        </Typography>
-                      </Grid>
-
-                      {/* Pincode */}
-                      <Grid item>
-                        <Typography sx={{ fontSize: '14px', color: '#333', marginLeft: '10px' }}>
-                          {location.pincode}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ) : (
-                  <Typography sx={{ fontSize: '14px', color: '#333', marginLeft: '10px' }}>
-                    Location not available
-                  </Typography>
-                )}
-              </Grid>
-            </Grid>
-
-
-            {/*working on the  location icon and  show the  loacation end */}
-
             {/* Navigation and User Action Section */}
-            <Grid item xs={6} sm={3} md={3} sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '30px' }}>
-              <Button sx={{ color: '#333', textTransform: 'none', display: { xs: 'none', md: 'block' } }}>
+            <Grid item xs={6} sm={3} md={5} sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '30px' }}>
+              <Button sx={{ color: '#FFF', textTransform: 'none', display: { xs: 'none', md: 'block' } }}>
                 <Typography component={"p"} sx={{ fontFamily: 'inherit', fontWeight: 600 }}>WhatsApp Only<br />
-                <span style={{fontSize: 14}}>{ServerURL.COMPANY_MOBILE}</span>
+                <span style={{fontSize: 14}}>+919894820412</span>
                 </Typography>
               </Button>
               <Button sx={{ color: '#333', fontWeight: 600, fontFamily: 'inherit', textTransform: 'none', display: { xs: 'none', md: 'none' } }}><Link to={"/"}>Home</Link></Button>
@@ -234,7 +182,7 @@ export default function AppHeader() {
                 <>
                   <Button
                     id={"register_btn"}
-                    sx={{ color: '#333', textTransform: 'none' }}
+                    sx={{ color: '#FFF', textTransform: 'none' }}
                     onClick={handleAuthDrawerToggle}
                   >
                     <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}>Register</Typography>
@@ -242,7 +190,7 @@ export default function AppHeader() {
 
                   <Button
                     id={"login_btn"}
-                    sx={{ color: '#333', textTransform: 'none' }}
+                    sx={{ color: '#FFF', textTransform: 'none' }}
                     onClick={handleAuthDrawerToggle}
                   >
                     <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}>Sign In</Typography>
@@ -254,7 +202,7 @@ export default function AppHeader() {
               {isAuthenticated && (
                 <Button
                   id={"profile_btn"}
-                  sx={{ color: '#333', textTransform: 'none' }}
+                  sx={{ color: '#FFF', textTransform: 'none' }}
                 >
                   <PersonIcon sx={{ ml: 1 }} />
                   <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}><Link to={"/myaccount"}>{isAuthenticatedName !== '' ? isAuthenticatedName : 'Profile'}</Link></Typography>
@@ -268,7 +216,7 @@ export default function AppHeader() {
                       color: theme.palette.footertextcolorCode.main
                     },
                   }}>
-                  <ShoppingBagIcon />
+                <ShoppingBagIcon sx={{ color: "white" }} />
                 </Badge>
               </IconButton>
             </Grid>
