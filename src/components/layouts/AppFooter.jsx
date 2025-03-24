@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Grid, Box, Typography, Button, List, ListItem, ListItemText } from '@mui/material';
-import { Instagram, Twitter, Facebook, LinkedIn, YouTube } from '@mui/icons-material';
+import { Instagram, Twitter, Facebook, LinkedIn } from '@mui/icons-material';
 import AppLogo from '../logo/AppLogo';
 import PlayStrore from '../../assets/play-store.svg';
 import AppStrore from '../../assets/app-store.svg';
@@ -12,38 +12,31 @@ const AppFooter = ({ CompanyDetails }) => {
     const theme = useTheme();
     return (
         <>
-            <Box sx={{ background: "#002134", padding: '50px 20px' }}>
+            <Box sx={{ background: "#222", padding: '50px 20px' }}>
                 <Container maxWidth="xl" sx={{ px: { xs: 0, md: 3 } }}>
                     <Grid container justifyContent="space-between" alignItems="flex-start">
                         {/* Left section */}
                         <Grid item xs={12} sm={12} md={3}>
                             <Box display="flex" flexDirection="column" alignItems="flex-start">
-                                <Box >
+                                <Box sx={{ background: theme.palette.whitecolorCode.main, borderRadius: 1 }}>
                                     <AppLogo />
                                 </Box>
-                                <Box display="flex" gap={2} sx={{ py: 3, justifyContent: 'center' }}>
-      <a
-        href="https://www.instagram.com/p2musicacademy"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Instagram"
-      >
-        <Instagram sx={{ color: theme.palette.footertextcolorCode.main }} />
-      </a>
-
-      <a
-        href="https://www.facebook.com/P2musicacademy/"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Facebook"
-      >
-        <Facebook sx={{ color: theme.palette.footertextcolorCode.main }} />
-      </a>
-
-   
-    </Box>
-                                <Typography variant="caption" sx={{ fontSize:'16px', color: theme.palette.footertextcolorCode.main }}>
-                                    ©Penskart
+                                <Box display="flex" gap={2} sx={{ py: 3 }}>
+                                    <Link href="#">
+                                        <Instagram sx={{ color: theme.palette.footertextcolorCode.main }}/>
+                                    </Link>
+                                    <Link href="#">
+                                        <Twitter sx={{ color: theme.palette.footertextcolorCode.main }}/>
+                                    </Link>
+                                    <Link href="#">
+                                        <Facebook sx={{ color: theme.palette.footertextcolorCode.main }} />
+                                    </Link>
+                                    <Link href="#">
+                                        <LinkedIn sx={{ color: theme.palette.footertextcolorCode.main }}/>
+                                    </Link>
+                                </Box>
+                                <Typography variant="caption" sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>
+                                    © Kassapos software solutions Pvt Ltd
                                 </Typography>
                             </Box>
                         </Grid>
@@ -78,16 +71,16 @@ const AppFooter = ({ CompanyDetails }) => {
 
                         <Grid item xs={12} sm={12} md={2}>
                             <Typography sx={{ color: theme.palette.footertextcolorCode.main, borderBottom: `2px solid ${theme.palette.basecolorCode.main}`, display: 'inline' }} fontWeight={600} variant={'h5'}>Official info:</Typography>
-                            {/* <Box display="flex" gap={2}>
+                            <Box display="flex" gap={2}>
                                 <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }} className="text-sm sm:text-base lg:text-lg">
                                     {ServerURL.COMPANY_ADDRESS}
                                 </Typography>
-                            </Box> */}
-                            <Box>
-                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Mobile: +919787787796 </Typography>
                             </Box>
                             <Box>
-                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Email:</Typography>
+                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Mobile: {ServerURL.COMPANY_MOBILE}</Typography>
+                            </Box>
+                            <Box>
+                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Email: {ServerURL.COMPANY_EMAIL}</Typography>
                             </Box>
                         </Grid>
 
@@ -98,9 +91,9 @@ const AppFooter = ({ CompanyDetails }) => {
                                 <Button component={Link} target='_blank' href='https://play.google.com/store/apps/details?id=com.webpos.healthysteps' variant="outlined" sx={{ mb: 1, border: `1px solid ${theme.palette.basecolorCode.main}`, color: theme.palette.footertextcolorCode.main }} startIcon={<img src={PlayStrore} alt="Play Store" width="20" />}>
                                     Get it on play store
                                 </Button>
-                                {/* <Button component={Link} target='_blank' href='https://play.google.com/store/apps/details?id=com.webpos.healthysteps' variant="outlined" sx={{ mt: 2, border: `1px solid ${theme.palette.basecolorCode.main}`, color: theme.palette.footertextcolorCode.main }} startIcon={<img src={AppStrore} alt="App Store" width="20" />}>
+                                <Button component={Link} target='_blank' href='https://play.google.com/store/apps/details?id=com.webpos.healthysteps' variant="outlined" sx={{ mt: 2, border: `1px solid ${theme.palette.basecolorCode.main}`, color: theme.palette.footertextcolorCode.main }} startIcon={<img src={AppStrore} alt="App Store" width="20" />}>
                                     Get it on app store
-                                </Button> */}
+                                </Button>
                             </Box>
                         </Grid>
                     </Grid>
