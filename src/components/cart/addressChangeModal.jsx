@@ -52,6 +52,8 @@ const AddressChangeModal = ({ UserId, setUserId, ModalOpen, handleChangeAddressC
         try {
             const address = await API_FetchCustomerAddress(UserId);
             setCustomerDetails(address);
+            console.log(address)
+
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching customer address:", error);

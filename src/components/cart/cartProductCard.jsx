@@ -32,22 +32,16 @@ const CartProductCard = ({ product }) => {
     <Card 
       id={product.Productid} 
       sx={{ 
-        width: { xs: 180, sm: 240, md: 280 }, 
-        height: { xs: 340, sm: 400, md: 320 },
-        margin: '10px auto', 
+        width: { xs: 160, sm: 220, md: 200 }, 
+        height: { xs: 320, sm: 380, md: 250 },
+        margin: '0 auto', 
         textAlign: "left", 
         border: '1px solid #e8e8e8',
-        borderRadius: '12px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        boxShadow: 'none',
         display: 'flex',
         flexDirection: 'column', 
         justifyContent: 'space-between',
-        cursor: 'pointer',
-        transition: 'transform 0.2s ease-in-out',
-        '&:hover': {
-          transform: 'translateY(-5px)',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.12)'
-        }        
+        cursor: 'pointer',        
       }}
     >
       <Box sx={{ position: 'relative', height: { xs: '50%', sm: '55%', md: '30%' } }}>
@@ -70,8 +64,8 @@ const CartProductCard = ({ product }) => {
             position: 'absolute',
             bottom: '8px',
             left: '8px',
-            backgroundColor: '#fff2e2',
-            color: '#d26e4b',
+            backgroundColor: '#fff6e0',
+            color: '#5d3e03',
             padding: '2px 5px',
             borderRadius: '3px',
             border: '1px solid #90784159',
@@ -99,31 +93,22 @@ const CartProductCard = ({ product }) => {
           {product.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon size="small" sx={{color: "#ee4372", fontSize: '18px'}} />}
         </Box>
       </Box>
-      <CardContent sx={{ 
-        height: { xs: '50%', sm: '45%', md: '40%' }, 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'space-between',
-        padding: '16px',
-        backgroundColor: '#ffffff'
-      }}>
+      <CardContent sx={{ height: { xs: '50%', sm: '45%', md: '40%' }, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <Box sx={{ flex: '1 0 auto' }}>
           <Typography 
             variant="body2" 
             component={"p"}
             sx={{
-              fontSize: '13px',
-              fontWeight: '600',
+              fontSize: '12px',
+              fontWeight: 'bold',
               overflow: 'hidden',
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               textOverflow: 'ellipsis',
-              lineHeight: '1.4',
+              lineHeight: '15px',
               fontFamily: 'inherit',
-              minHeight: '36px',
-              color: '#253D4E',
-              marginBottom: '8px', 
+              minHeight: '32px', 
             }}
           >
             {product.Description}
@@ -155,11 +140,10 @@ const CartProductCard = ({ product }) => {
           <Typography 
             variant="body2" 
             sx={{
-              color: '#3BB77E', 
-              fontSize: '16px', 
+              color: '#253D4E', 
+              fontSize: '14px', 
               lineHeight: '24px',
               fontFamily: 'inherit',
-              fontWeight: '600',
             }}
           >
             {totalPrice.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -169,11 +153,10 @@ const CartProductCard = ({ product }) => {
               variant="body2" 
               sx={{ 
                 textDecoration: 'line-through', 
-                fontSize: '13px',
-                fontWeight: 400,
-                color: '#7E7E7E',
+                fontSize: '12px',
+                fontWeight: 200,
+                color: '#a3a4ae',
                 fontFamily: 'inherit',
-                marginLeft: '8px',
               }}
             >
               {product.MRP.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -187,14 +170,12 @@ const CartProductCard = ({ product }) => {
             display: quantity !== 0 ? 'flex' : 'none', 
             alignItems: 'center', 
             justifyContent: 'space-between',
-            marginTop: '12px',             
+            marginTop: '10px',             
             border: '1px solid #3BB77E', 
             fontFamily: 'inherit',
-            borderRadius: '8px',
-            padding: { xs: '8px 0px', sm: '8px 0px', md: '8px 0px' },
-            backgroundColor: '#f6fffa',
+            padding: { xs: '6px 0px', sm: '7px 0px', md: '7.2px 0px' },
             '&:hover':{
-              background: '#edfff5',
+              background: 'none',
               border: '1px solid #3BB77E',
               color: '#3BB77E'
             } 
@@ -208,12 +189,6 @@ const CartProductCard = ({ product }) => {
               width: '25%',          
               color: '#3BB77E', 
               fontFamily: 'inherit',
-              fontWeight: '600',
-              fontSize: '18px',
-              cursor: 'pointer',
-              '&:hover': {
-                opacity: 0.8
-              }
             }}
           >
             -

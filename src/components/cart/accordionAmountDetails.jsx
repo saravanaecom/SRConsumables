@@ -5,12 +5,13 @@ import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid ,TextField,Button} from '@mui/material';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import SmsIcon from '@mui/icons-material/Sms';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import { useCart } from '../../context/CartContext';
 import { ServerURL } from '../../server/serverUrl';
+import { FetchCoupons,Fetchsalecoupon } from '../../services/checkoutServices';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -54,7 +55,15 @@ export default function AccordionAmountDetails({ useWallet, walletAmount }) {
   const [ExtraDiscount, setExtraDiscount] = React.useState(0);
   const [HandlingCharge, setHandlingCharge] = React.useState(0);
   const [DeliveryFee, setDeliveryFee] = React.useState(0);
+  const [CouponDiscount,setCouponDiscount]=React.useState(0);
+  const [CouponDiscountdata,setCouponDiscountData]=React.useState([]);
+  const [NetAmount,setNetAmount]=React.useState(0);
+  const [couponCode, setCouponCode] =React.useState('');
+  const [loading, setLoading] = React.useState(false); 
+  const [discountValue, setDiscountValue] = React.useState(0);
+  const [discountAmount, setDiscountAmount] = React.useState(0);
 
+  const [appliedCoupon, setAppliedCoupon] = React.useState(null);
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -67,7 +76,7 @@ export default function AccordionAmountDetails({ useWallet, walletAmount }) {
       setMRPAmount(totalMRP);
       setTotalPrice(totalPrice);
       setSavingsAmount(totalMRP - totalPrice);
-
+      
       if (useWallet) {
         setTotalPrice((prevPrice) => prevPrice - walletAmount);
       } else {
@@ -77,6 +86,148 @@ export default function AccordionAmountDetails({ useWallet, walletAmount }) {
   }, [cartItems, useWallet, walletAmount]);
   
 
+  const handleApplyCoupon = async () => {
+    const objlist = {
+      Comid: ServerURL.COMPANY_REF_ID,
+      CustomerRefId: Number(atob(localStorage.getItem("userId"))),
+      code: couponCode,
+    };
+  
+    console.log(objlist); 
+  
+    
+    setLoading(true);
+  
+  try {
+      const response = await FetchCoupons(objlist);
+      localStorage.setItem('DiscountData', JSON.stringify(response));
+      console.log(response); 
+      if (response && response.length > 0) {
+
+        const couponData = response[0];
+        const expiresAt = new Date(couponData.expiresAt);
+        const currentDate = new Date();
+        if (currentDate > expiresAt) {
+          console.log("Coupon has expired.");
+          setCouponDiscountData(null);  
+
+        }
+        else{
+          const objdata = {
+            Comid: ServerURL.COMPANY_REF_ID,
+            CustomerRefId: Number(atob(localStorage.getItem("userId"))),
+            CouponRefId: response[0].Id,
+          };
+
+          const count = await Fetchsalecoupon(objdata);
+            
+           if(count === 0 && couponData.isMultipleTimesOffer === 0){
+            if (couponData.coupondiscount) {
+          
+              const discountPercent = parseFloat(couponData.coupondiscount);
+              if (!isNaN(discountPercent)) {
+                
+                const discountAmount = (discountPercent / 100) * TotalPrice;
+                localStorage.setItem('discountAmount', JSON.stringify(discountAmount));
+                setDiscountAmount(discountAmount);
+                setCouponDiscountData({ type: 'percent', value: couponData.coupondiscount });
+                setTotalPrice(TotalPrice - discountAmount); 
+              }
+            } else if (couponData.discountValue) {
+             
+              const discountValue = parseFloat(couponData.discountValue);
+              if (!isNaN(discountValue)) {
+                localStorage.setItem('discountValue', JSON.stringify(discountValue));
+                setDiscountValue(discountValue);
+                setCouponDiscountData({ type: 'value', value: couponData.discountValue });
+                setTotalPrice(TotalPrice - discountValue); 
+              }
+            } else {
+              setCouponDiscountData(null); 
+            }
+
+
+           }
+
+           else if (count > 0 && couponData.isMultipleTimesOffer === 0){
+            console.log("Coupon has already been applied.");
+            setCouponDiscountData(null);
+           }
+         
+          else if(count > 0 && couponData.isMultipleTimesOffer === 1){
+          if (couponData.coupondiscount) {
+          
+            const discountPercent = parseFloat(couponData.coupondiscount);
+            if (!isNaN(discountPercent)) {
+              
+              const discountAmount = (discountPercent / 100) * TotalPrice;
+              localStorage.setItem('discountAmount', JSON.stringify(discountAmount));
+              setDiscountAmount(discountAmount);
+              setCouponDiscountData({ type: 'percent', value: couponData.coupondiscount });
+              setTotalPrice(TotalPrice - discountAmount); 
+            }
+          } 
+          else if (couponData.discountValue) {
+           
+            const discountValue = parseFloat(couponData.discountValue);
+            if (!isNaN(discountValue)) {
+              localStorage.setItem('discountValue', JSON.stringify(discountValue));
+              setDiscountValue(discountValue);
+              setCouponDiscountData({ type: 'value', value: couponData.discountValue });
+              setTotalPrice(TotalPrice - discountValue); 
+            }
+          } else {
+            setCouponDiscountData(null); 
+          }
+        }
+        else if(count === 0 && couponData.isMultipleTimesOffer === 1){
+          if (couponData.coupondiscount) {
+          
+            const discountPercent = parseFloat(couponData.coupondiscount);
+            if (!isNaN(discountPercent)) {
+              
+              const discountAmount = (discountPercent / 100) * TotalPrice;
+              localStorage.setItem('discountAmount', JSON.stringify(discountAmount));
+              setDiscountAmount(discountAmount);
+              setCouponDiscountData({ type: 'percent', value: couponData.coupondiscount });
+              setTotalPrice(TotalPrice - discountAmount); 
+            }
+          } 
+          else if (couponData.discountValue) {
+           
+            const discountValue = parseFloat(couponData.discountValue);
+            if (!isNaN(discountValue)) {
+              localStorage.setItem('discountValue', JSON.stringify(discountValue));
+              setDiscountValue(discountValue);
+              setCouponDiscountData({ type: 'value', value: couponData.discountValue });
+              setTotalPrice(TotalPrice - discountValue); 
+            }
+          } else {
+            setCouponDiscountData(null); 
+          }
+        }
+          
+
+        else {
+          setCouponDiscountData(null);
+        }
+        }
+       
+      } 
+      
+      else {
+        setCouponDiscountData(null); 
+      }
+    } catch (error) {
+     
+      console.error("Failed to apply the coupon", error);
+      setCouponDiscountData(null); 
+    } finally {
+      
+      setLoading(false);
+    }
+  };
+  
   return (
     <div>
       <Accordion sx={{display: 'none'}} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
@@ -221,6 +372,91 @@ export default function AccordionAmountDetails({ useWallet, walletAmount }) {
                   {(TotalPrice + DeliveryFee + HandlingCharge - ExtraDiscount).toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </Typography>
               </Grid>
+
+             {/* my updated code  */}
+                
+             <Grid item xs={8} sx={{ mt: 0.5 }}>
+  <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">
+  Discount Applied
+  </Typography>
+</Grid>
+<Grid item xs={4} sx={{ mt: 0.5 }}>
+  <Typography sx={{ fontSize: '14px', fontWeight: 600 }} variant="body1" align="right">
+    {CouponDiscountdata?.type === 'percent' && discountAmount > 0 ? (
+      <>
+       {discountAmount.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      </>
+    ) : CouponDiscountdata?.type === 'value' && discountValue > 0 ? (
+      <>
+      {discountValue.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      </>
+    ) : (
+     0
+    )}
+  </Typography>
+</Grid>
+
+             {/* myupdated code */}
+
+
+
+              <Grid container spacing={2} alignItems="center" sx={{ mt: 1 }}>
+          {/* Label */}
+          <Grid item xs={4}>
+            <Typography 
+              variant="body1" 
+              sx={{ fontSize: '14px', fontWeight: 600 }}
+            >
+              Offer Coupon
+            </Typography>
+          </Grid>
+
+          {/* Text Field */}
+          <Grid item xs={5}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              size="small"
+              placeholder="Enter coupon code"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
+            />
+          </Grid>
+
+          {/* Apply Button */}
+          <Grid item xs={3}>
+            <Button 
+              variant="contained" 
+              color="primary"
+              fullWidth
+              size="small"
+              onClick={handleApplyCoupon}
+            >
+              Apply
+            </Button>
+          </Grid>
+
+          {CouponDiscountdata && CouponDiscountdata.value && (
+  <Grid item xs={12} sx={{ mt: 2 }}>
+    <Typography 
+      sx={{ 
+        fontSize: '14px', 
+        fontWeight: 600, 
+        color: 'green' 
+      }}
+    >
+      Coupon Applied: 
+      {CouponDiscountdata.type === 'percent'
+        ? CouponDiscountdata.value 
+        : `${CouponDiscountdata.value} RS off`}  
+    </Typography>
+  </Grid>
+)}
+
+
+              </Grid>
+
+
             </Grid>
           </Box>
         </AccordionDetails>

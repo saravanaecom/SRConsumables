@@ -95,15 +95,16 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
   // update the selected address
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
+    console.log(selectedAddress);
     setModalOpen(false);
   };
 
-  useEffect(() => {
-    if(CartDrawerOpen === true){
-      const selectedAddress = JSON.parse(sessionStorage.getItem("selectedAddress"));
-      setSelectedAddress(selectedAddress);
-    }    
-  }, [CartDrawerOpen]);
+  // useEffect(() => {
+  //   if(CartDrawerOpen === true){
+  //     const selectedAddress = JSON.parse(localStorage.getItem("location"));
+  //     setSelectedAddress(selectedAddress);
+  //   }    
+  // }, [CartDrawerOpen]);
 
   const handleBrowseProducts = () => {
     handleAuthDrawerToggle(false);
@@ -125,6 +126,10 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
     setClearCartOpen(false);
   };
 
+
+    useEffect(()=>{
+      FetchMinimumOrderAmount();
+    },[])
   // Handle wallet checkbox change
   const handleWalletCheckboxChange = (event) => {
     if (event.target.checked === true) {
@@ -154,7 +159,7 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
       const CartTotalAmount = cartTotalAmountCheck();
       FetchMinimumOrderAmount();
 
-      if (CartTotalAmount >= MinimumOrderAmount) {
+      if (CartTotalAmount >= 0) {
         if (useWallet === true) {
           handleAuthDrawerToggle(false);
           navigate(`/product-checkout?Wallet=${btoa(WalletAmount)}`);
