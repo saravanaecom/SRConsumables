@@ -3,14 +3,18 @@ import APIRoutes from '../routes/APIRoutes';
 import {ServerURL} from '../server/serverUrl';
 
 // Insert My order
-export const API_InsertSaleOrderSave = async (objlist) => {
+export const API_InsertSaleOrderSave = async (objlist,WhatsAppUrl, OwnerMobileNo) => {
     console.log('objlist', objlist);
     try {
       const response = await fetch(`${APIRoutes.INSERT_SALE_ORDER_SAVE}`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
-          objData: ''
+          objData: '',
+          Whatsappaccountid: WhatsAppUrl,
+          Ownerno: OwnerMobileNo
+        
+          
         },
         body: JSON.stringify(objlist)
   
@@ -57,3 +61,62 @@ export const API_InsertSaleOrderSave = async (objlist) => {
         throw error; // Re-throw so the calling function can handle it
     }
 };
+
+
+export const FetchCoupons = async (objlist) => {
+  try {
+    const response = await fetch(`${APIRoutes.GET_COUPONVALUE}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(objlist),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+
+    const data = await response.json();
+
+    // Check if data is an array directly
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error('No data found.');
+    }
+
+    return data; // Return the array directly
+  } catch (error) {
+    console.error('Failed to fetch details:', error);
+    throw error; // Re-throw so the calling function can handle it
+  }
+};
+
+
+
+export const Fetchsalecoupon = async (objlist) => {
+  try {
+    const response = await fetch(`${APIRoutes.GET_SALECOUPONVALUE}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(objlist),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+
+    const data = await response.json();
+    return data; 
+  } catch (error) {
+    console.error('Failed to fetch details:', error);
+    throw error; // Re-throw so the calling function can handle it
+  }
+};
+
+
+
+
+
+
