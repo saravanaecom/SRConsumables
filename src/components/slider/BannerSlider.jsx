@@ -69,7 +69,8 @@ export default function BannerSlider() {
   const GetBannerSliderLists = async () => {
     try {
       const bannerList = await API_FetchBannerOfferPost();
-      setBannerSliderLists(bannerList);
+      const filteredList = bannerList.filter((item) => item.istopoffer === 0);
+      setBannerSliderLists(filteredList);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -108,7 +109,7 @@ export default function BannerSlider() {
                       xs: 200,
                       sm: 320,
                       md: 400,
-                      lg: 500,
+                      lg: 600,
                     },
                     width: "100%",
                     margin: '0 auto',
@@ -137,7 +138,7 @@ export default function BannerSlider() {
                       xs: 200,
                       sm: 320,
                       md: 400,
-                      lg: 300,
+                      lg: 400,
                     },
                     width: "100%",
                     display: 'block',
