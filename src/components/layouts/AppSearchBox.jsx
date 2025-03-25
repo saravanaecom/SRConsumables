@@ -43,7 +43,7 @@ const AppSearchBox = () => {
   };
 
   return (
-    <div style={{ width: 'auto', margin: '0 auto', padding: '20px' }}>
+    <div style={{ width: 'auto', margin: '0 auto' }}>
       <Autocomplete
         freeSolo
         options={searchLists}
@@ -52,42 +52,35 @@ const AppSearchBox = () => {
         onInputChange={(event, newValue) => handleSearchProducts(newValue)} 
         renderInput={(params) => (
           <TextField
-          {...params}
-          label="Search for products"
-          variant="outlined"
-          sx={{
-            borderRadius: '25px',
-            backgroundColor: '#f5f5f5',
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '25px',
-              '& fieldset': {
-                borderColor: '#1709b3',
+            {...params}
+            label="Search for products"
+            variant="outlined"
+            sx={{
+              padding: 0,
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: theme.palette.basecolorCode.main,
+                },
+                '&:hover fieldset': {
+                  borderColor: theme.palette.basecolorCode.main,
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: theme.palette.basecolorCode.main, 
+                },
               },
-              '&:hover fieldset': {
-                borderColor: '#03129c',
+              '& .MuiInputLabel-root': {
+                color: 'gray', 
+                '&.Mui-focused': {
+                  color: theme.palette.basecolorCode.main,
+                },
+                '&:hover': {
+                  color: theme.palette.basecolorCode.main,
+                },
               },
-              '&.Mui-focused fieldset': {
-                borderColor: '#81c784',
-              },
-            },
-            '& .MuiInputLabel-root': {
-              color: '#756868',
-              fontWeight: 'bold',
-              '&.Mui-focused': {
-                color: '#756868',
-              },
-              '&:hover': {
-                color: '#756868',
-              },
-            },
-            '& .MuiInputBase-input': {
-              color: '#333',
-            },
-          }}
-          autoComplete={"off"}
-          size="small"
-        />
-        
+            }}
+            autoComplete={"off"}
+            size="small"
+          />
         )}
         renderOption={(props, option) => (
           <List {...props} key={option.Id} 
@@ -96,7 +89,7 @@ const AppSearchBox = () => {
           value={option?.Productid ? option.Productid : option?.Id}
           onClick={handleProductClick}
           >
-            <ListItem style={{ display: 'flex', alignItems: 'center', padding: '10px', borderRadius: '15px', backgroundColor: '#ffffff', marginBottom: '5px' }}>
+            <ListItem style={{ display: 'flex', alignItems: 'center', p: 0 }}>
               <ListItemAvatar>
                 <Avatar src={ImagePathRoutes.ProductImagePath + option.Img0} alt={option.Description} />
               </ListItemAvatar>
