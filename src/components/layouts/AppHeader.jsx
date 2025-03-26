@@ -123,7 +123,7 @@ export default function AppHeader() {
       <AppBar
         position={isScrolled ? 'sticky' : 'relative'}
         color="transparent"
-        elevation={isScrolled ? 7 : 0}
+        elevation={isScrolled ? 5 : 0}
 
         sx={{
           borderBottom: isScrolled ? 'none' : '1px solid #ddd',
@@ -131,7 +131,7 @@ export default function AppHeader() {
           transition: 'all 1.5s ease',
           zIndex: 9,
           top: 0,
-          height: '80px',
+          height: '70px',
           '@media (max-width: 600px)': {
             position: 'relative',
             width: '100%',
