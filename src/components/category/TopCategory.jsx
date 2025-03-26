@@ -117,7 +117,7 @@ const TopCategory = (props) => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Avatar
                   src={AllCategories}
-                  sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
+                  sx={{ width: 55, height: 55, mb: 0.5}}
                 />
                 <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main}}>
                   All Categories
@@ -142,7 +142,7 @@ const TopCategory = (props) => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Avatar
                   src={TopOffers}
-                  sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
+                  sx={{ width: 55, height: 55, mb: 0.5 }}
                 />
                 <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main}}>
                   Top Offers
@@ -167,7 +167,7 @@ const TopCategory = (props) => {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Avatar
                   src={NewProducts}
-                  sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
+                  sx={{ width: 55, height: 55, mb: 0.5 }}
                 />
                 <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main }}>
                   New Arrivals
@@ -208,7 +208,7 @@ const TopCategory = (props) => {
                   <Box id={item.Id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Avatar
                       src={ImagePathRoutes.CategoryImagePath + item.ImagePath}
-                      sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
+                      sx={{ width: 55, height: 55, mb: 0.5 }}
                       alt={item.Category}
                     />
                     <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main }}>
