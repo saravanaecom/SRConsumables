@@ -23,6 +23,7 @@ import ThemeSettings from '../theme/theme';
 import {ServerURL} from '../server/serverUrl';
 import LocationSelector from "../components/LocationSelector";
 import {LocationProvider} from '../components/context/LocationContext';
+import FavProduct  from '../components/homepagefavorites'
 
 
 function AppRouter() {
@@ -50,6 +51,7 @@ function AppRouter() {
             ServerURL.COMPANY_PAYMENT_RAZ_KEY = objtheme.data[0].PaymentId;
             ServerURL.COMPANY_LATITUDE = objtheme.data[0].Latitude;
             ServerURL.COMPANY_LONGITUDE = objtheme.data[0].Longitude;
+            ServerURL.COD=objtheme.data[0].COD;
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching order lists:", error);
@@ -91,6 +93,7 @@ function AppRouter() {
                                     <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                                     <Route path="/refund-and-cancellation" element={<RefundAndCancellation />} />
                                     <Route path="/locationselector" element={<LocationSelector />} />
+                                    <Route path='/Favproduct' element={<FavProduct/>}/>
                                     {/* Catch-all Route for 404 */}
                                     <Route path="*" element={<Navigate to="/" replace />} />
                                 </Routes>
