@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, AppBar, Toolbar, Grid, IconButton, Button, Typography, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppLogo from '../logo/AppLogo';
@@ -14,6 +15,7 @@ import AppSearchBox from './AppSearchBox';
 import { useAuth } from '../../context/authContext';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
 import { ServerURL } from '../../server/serverUrl';
 
 const drawerContent = (
@@ -38,6 +40,7 @@ const drawerContent = (
 
 export default function AppHeader() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated, isAuthenticatedName } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [registerDrawerOpen, setRegisterDrawerOpen] = useState(false);
@@ -207,7 +210,15 @@ export default function AppHeader() {
                   <PersonIcon sx={{ ml: 1 }} />
                   <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}><Link to={"/myaccount"}>{isAuthenticatedName !== '' ? isAuthenticatedName : 'Profile'}</Link></Typography>
                 </Button>
+
+                
               )}
+
+            {isAuthenticated && (
+          <IconButton color="#FFF" onClick={() => navigate("/Favproduct")}>
+        <FavoriteIcon sx={{ ml: 1 ,color :"#FFF" }}/>
+      </IconButton>
+      )}
 
               <IconButton color="inherit" onClick={handleAuthDrawerToggle}>
                 <Badge badgeContent={cartItemsCount} sx={{
