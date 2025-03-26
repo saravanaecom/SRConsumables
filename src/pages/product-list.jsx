@@ -386,7 +386,7 @@ const ProductList = () => {
         <Grid container>
           {/* Left-side Drawer for larger screens */}
           {(offerProducts === null && relatedProducts === null && newProducts === null) && (
-            <Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' }, zIndex: 10 }} style={{ position: 'sticky', top: 80, height: '100vh' }}>
+            <Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' } }} style={{ position: 'sticky', top: 70, height: '100vh' }}>
               <Drawer
                 variant="permanent"
                 sx={{
