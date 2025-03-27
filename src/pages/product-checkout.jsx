@@ -66,7 +66,7 @@ export default function ProductCheckout() {
     const handleAlertOpen = () => setAlertOpen(true);
     const [adminlatitude, setAdminlatitude] = React.useState('');
     const [adminLangitude, setAdminLangitude] = React.useState('');
-
+    const  [COD ,setCod]= React.useState(1);
     const [userlatitude, setUserlatitude] = React.useState('');
     const [userLangitude, setuserLangitude] = React.useState('');
     const [distance, setDistance] =  React.useState(0);
@@ -127,7 +127,7 @@ export default function ProductCheckout() {
                 console.log(adminlatitude)
                 setAdminLangitude(firstItem.Longitude);
                   console.log(adminLangitude)
-                
+                  setCod(firstItem.COD)
                 
             } else {
                 console.error("Fetched data is not a valid array or is empty.");
@@ -218,7 +218,7 @@ export default function ProductCheckout() {
         } catch (error) {
             setPincodedata([]);
             console.error("Error fetching categories:", error);
-        }
+        } 
     };
     useEffect(() => {
         FetchDeliveryTimes();
@@ -340,16 +340,19 @@ export default function ProductCheckout() {
             setInfoStatus('Please select date');
             handleAlertOpen(true);
         }
-        else if (PaymentType === '') {
+        else if (COD === 1){
+          if (PaymentType === '') {
             setInfoStatus('Please choose payment type');
             handleAlertOpen(true);
         }
+         }
         else {
+            if(COD ==1){
             if(PaymentType === 'COD'){
                 setOnlinePayment(false);
                 setAlertOpen(false);
                 PlaceOrder(0, '');
-            }
+            }}
             else{
                 setOnlinePayment(true);
                 console.log("call");
@@ -378,7 +381,6 @@ export default function ProductCheckout() {
             if (response.length !== 0) {
                 setLoading(false);
                 localStorage.removeItem('cartItems');
-                localStorage.removeItem('DiscountData');
                 setCartItems([]);
                 setInfoStatus('Your order has been placed');
                 setShowLoader(false);
@@ -467,8 +469,7 @@ export default function ProductCheckout() {
                 Remarks: "",                    
             },
         ];
-        console.log(deliverycharge)
-        console.log(master)
+       
         await InsertSaleOrderSave(master);
 
     
@@ -609,7 +610,7 @@ export default function ProductCheckout() {
                             </Typography>
                             <RadioGroup>
                                 <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />
-                                <FormControlLabel value="COD" control={<Radio onChange={() => handlePaymentType('COD')} size="small" />} label="Cash on Delivery" />
+                                {COD === 1 && ( <FormControlLabel value="COD"control={<Radio onChange={() => handlePaymentType("COD")} size="small" />}label="Cash on Delivery"/>)}
                             </RadioGroup>
 
                             <Box sx={{ mt: 2, float: 'left' }}>
@@ -744,16 +745,6 @@ export default function ProductCheckout() {
                                         {HandlingCharge.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </Typography>
                                 </Grid>
-                                  
-                                <Grid item xs={8} sx={{  mt: 0.5 }}>
-                                    <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">Coupon Discount:</Typography>
-                                </Grid>
-                                <Grid item xs={4} sx={{  mt: 0.5 }}>
-                                    <Typography sx={{ fontSize: '14px' }} variant="body1" align="right">
-                                        {discountAmount.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                    </Typography>
-                                </Grid>
-                                
 
                                 <Grid item xs={8} sx={{  mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">Delivery fee:</Typography>
@@ -764,14 +755,12 @@ export default function ProductCheckout() {
                                     </Typography>
                                 </Grid>
 
-
-
                                 <Grid item xs={8} sx={{ mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">Total Amount</Typography>
                                 </Grid>
                                 <Grid item xs={4} sx={{ mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px' }} variant="body1" align="right">
-                                        {(TotalPrice + deliverycharge + HandlingCharge ).toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {(TotalPrice + deliverycharge + HandlingCharge - ExtraDiscount).toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </Typography>
                                 </Grid>
                             </Grid>
