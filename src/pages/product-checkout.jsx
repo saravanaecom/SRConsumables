@@ -340,19 +340,18 @@ export default function ProductCheckout() {
             setInfoStatus('Please select date');
             handleAlertOpen(true);
         }
-        else if (COD === 1){
-          if (PaymentType === '') {
+          if (COD ==1 && PaymentType === '') {
             setInfoStatus('Please choose payment type');
             handleAlertOpen(true);
         }
-         }
+         
         else {
-            if(COD ==1){
-            if(PaymentType === 'COD'){
+            
+            if(COD ==1 && PaymentType === 'COD' ){
                 setOnlinePayment(false);
                 setAlertOpen(false);
                 PlaceOrder(0, '');
-            }}
+            }
             else{
                 setOnlinePayment(true);
                 console.log("call");
