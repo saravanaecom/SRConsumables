@@ -7,6 +7,8 @@ import PlayStrore from '../../assets/play-store.svg';
 import AppStrore from '../../assets/app-store.svg';
 import { useTheme } from '@mui/material/styles';
 import { ServerURL } from '../../server/serverUrl';
+import { QrCode  } from '@mui/icons-material';
+import QrImg from '../../assets/penskart.png'
 
 const AppFooter = ({ CompanyDetails }) => {
     const theme = useTheme();
@@ -18,7 +20,7 @@ const AppFooter = ({ CompanyDetails }) => {
                         {/* Left section */}
                         <Grid item xs={12} sm={12} md={3}>
                             <Box display="flex" flexDirection="column" alignItems="flex-start">
-                                <Box sx={{ background: theme.palette.whitecolorCode.main, borderRadius: 1 }}>
+                                <Box sx={{  borderRadius: 1 }}>
                                     <AppLogo />
                                 </Box>
                                 <Box display="flex" gap={2} sx={{ py: 3 }}>
@@ -36,7 +38,7 @@ const AppFooter = ({ CompanyDetails }) => {
                                     </Link>
                                 </Box>
                                 <Typography variant="caption" sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>
-                                    © Kassapos software solutions Pvt Ltd
+                                    Developed by Kassapos software solutions Pvt Ltd
                                 </Typography>
                             </Box>
                         </Grid>
@@ -88,12 +90,11 @@ const AppFooter = ({ CompanyDetails }) => {
                         <Grid item xs={12} sm={12} md={2}>
                             <Typography sx={{ color: theme.palette.footertextcolorCode.main, borderBottom: `2px solid ${theme.palette.basecolorCode.main}`, display: 'inline' }} fontWeight={600} variant={'h5'}>Download App</Typography>
                             <Box sx={{ mt: 2 }}>
-                                <Button component={Link} target='_blank' href='https://play.google.com/store/apps/details?id=com.webpos.healthysteps' variant="outlined" sx={{ mb: 1, border: `1px solid ${theme.palette.basecolorCode.main}`, color: theme.palette.footertextcolorCode.main }} startIcon={<img src={PlayStrore} alt="Play Store" width="20" />}>
+                                <Button component={Link} target='_blank' href='' variant="outlined" sx={{ mb: 1, border: `1px solid ${theme.palette.basecolorCode.main}`, color: theme.palette.footertextcolorCode.main }} startIcon={<img src={PlayStrore} alt="Play Store" width="20" />}>
                                     Get it on play store
                                 </Button>
-                                <Button component={Link} target='_blank' href='https://play.google.com/store/apps/details?id=com.webpos.healthysteps' variant="outlined" sx={{ mt: 2, border: `1px solid ${theme.palette.basecolorCode.main}`, color: theme.palette.footertextcolorCode.main }} startIcon={<img src={AppStrore} alt="App Store" width="20" />}>
-                                    Get it on app store
-                                </Button>
+                               
+                                <img src={QrImg} alt="Play Store" width="150" />
                             </Box>
                         </Grid>
                     </Grid>
