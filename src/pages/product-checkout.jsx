@@ -217,11 +217,8 @@ export default function ProductCheckout() {
         console.error("Error fetching categories:", error);
         
     }
-
       }
-
-
-      const findDeliveryCharge = () => {
+        const findDeliveryCharge = () => {
         const chargeData = deliverychargelist.find(item => 
             distance >= item.StartKM && distance <= item.EndKM
         );
@@ -388,12 +385,12 @@ export default function ProductCheckout() {
             handleAlertOpen(true);
         }
         else {
-            if(COD ==1 && PaymentType === 'COD'){
+            if(COD ==1 && PaymentType === 'COD' || gstNumber == 1){
                 setOnlinePayment(false);
                 setAlertOpen(false);
                 PlaceOrder(0, '');
             }
-            else if(COD ==0 && PaymentType === '' && gstNumber == 1 ){
+            else if(COD ==0 && PaymentType === '' && gstNumber == 0 ){
                 setOnlinePayment(false);
                 setAlertOpen(false);
                 PlaceOrder(0, '');
@@ -655,8 +652,8 @@ export default function ProductCheckout() {
                                 Payment
                             </Typography>
                             <RadioGroup>
-                              {(gstNumber === 0 || gstNumber === null || COD === 1 || COD === 0  ) && ( <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />)}
-                              {(COD === 1 || gstNumber === 1)  && ( <FormControlLabel value="COD"control={<Radio onChange={() => handlePaymentType("COD")} size="small" />}label="Cash on Delivery"/>)}
+                              {(gstNumber === '0' || gstNumber === null && COD === 0 ) && ( <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />)}
+                              {(COD === 1 || gstNumber === '1')  && ( <FormControlLabel value="COD"control={<Radio onChange={() => handlePaymentType("COD")} size="small" />}label="Cash on Delivery"/>)}
                             </RadioGroup>
 
                             <Box sx={{ mt: 2, float: 'left' }}>
