@@ -15,6 +15,7 @@ import OrderSuccess from '../assets/success.gif';
 import OrderInfo from '../assets/information.gif';
 import AddressChangeModal from '../components/cart/addressChangeModal';
 import RazorpayPayment from '../components/RazorpayPayment';
+import { API_FetchCustomerAddress } from '../services/userServices';
 import dayjs from 'dayjs';
 import { getDistance } from 'geolib';
 
@@ -72,6 +73,8 @@ export default function ProductCheckout() {
     const [distance, setDistance] =  React.useState(0);
     const [deliverychargelist,  setDeliverychargelist] = React.useState([]);
     const [deliverycharge,  setDeliveryCharge] = React.useState([]);
+    const [customerDetails, setCustomerDetails] = React.useState(null);
+    const [gstNumber, setGstNumber] =React.useState(null);
     const handleAlertClose = () => {
         if (InfoStatus === 'Your order has been placed') {
             navigate('/');
@@ -96,6 +99,46 @@ export default function ProductCheckout() {
         }
     };
 
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            let storedUserId = localStorage.getItem("userId");
+
+            if (storedUserId) {
+                try {
+                    storedUserId = decodeURIComponent(storedUserId);
+                    let numericUserId = Number(atob(storedUserId));
+
+                    if (!isNaN(numericUserId)) {
+                        setUserId(numericUserId);
+
+                        // Fetch customer address only if userId is valid
+                        try {
+                            const address = await API_FetchCustomerAddress(numericUserId);
+                            if (Array.isArray(address) && address.length > 0) {
+                                const firstCustomer = address[0];
+                                setCustomerDetails(firstCustomer);
+                                setGstNumber(firstCustomer.GSTNo || null);
+                           
+                            }
+
+                            console.log("Fetched Address:", address);
+                        } catch (error) {
+                            console.error("Error fetching customer address:", error);
+                        }
+                    } else {
+                        console.error("Decoded value is not a valid number");
+                    }
+                } catch (error) {
+                    console.error("Error decoding userId:", error);
+                }
+            } else {
+                console.log("No userId found in localStorage");
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleChangeAddressClose = () => {
         setModalOpen(false);
@@ -340,14 +383,17 @@ export default function ProductCheckout() {
             setInfoStatus('Please select date');
             handleAlertOpen(true);
         }
-          if (COD ==1 && PaymentType === '') {
+          if (COD ==1 && PaymentType === '' && gstNumber === 0 && gstNumber === null) {
             setInfoStatus('Please choose payment type');
             handleAlertOpen(true);
         }
-         
         else {
-            
-            if(COD ==1 && PaymentType === 'COD' ){
+            if(COD ==1 && PaymentType === 'COD'){
+                setOnlinePayment(false);
+                setAlertOpen(false);
+                PlaceOrder(0, '');
+            }
+            else if(COD ==0 && PaymentType === '' && gstNumber == 1 ){
                 setOnlinePayment(false);
                 setAlertOpen(false);
                 PlaceOrder(0, '');
@@ -366,6 +412,7 @@ export default function ProductCheckout() {
 
 
     //Order save API function
+   
     const InsertSaleOrderSave = async (master) => {
         try {
             let WhatsAppUrl = "";
@@ -608,8 +655,8 @@ export default function ProductCheckout() {
                                 Payment
                             </Typography>
                             <RadioGroup>
-                                <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />
-                                {COD === 1 && ( <FormControlLabel value="COD"control={<Radio onChange={() => handlePaymentType("COD")} size="small" />}label="Cash on Delivery"/>)}
+                              {(gstNumber === 0 || gstNumber === null) && ( <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />)}
+                              {(COD === 1 || gstNumber === 1  || gstNumber != null)  && ( <FormControlLabel value="COD"control={<Radio onChange={() => handlePaymentType("COD")} size="small" />}label="Cash on Delivery"/>)}
                             </RadioGroup>
 
                             <Box sx={{ mt: 2, float: 'left' }}>
@@ -771,3 +818,5 @@ export default function ProductCheckout() {
         </>
     );
 }
+
+
