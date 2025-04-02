@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CategoryCard from '../components/category/categoryhome';
 import ProductBycategory from '../components/slider/ProductByCategory';
 import TopOfferShow from '../components/TopOfferShow'
+
 const ScrollSection = ({ children }) => {
     const sectionRef = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -59,9 +60,10 @@ export default function HomePage() {
                 
                 >
                     {/* Hero Section */}
-                    <ScrollSection>
-                        <Banner />
-                    </ScrollSection>
+                     
+ 
+                        <BannerSlider />
+          
                     <TopOfferShow/>   
                     {/* Offer Products */}
                     <ScrollSection>
@@ -72,7 +74,7 @@ export default function HomePage() {
                     <ProductByIndexPage />
          
                     <ImageCategorySlider />
-                    <ProductBycategory />
+                  
 
                     {/* Scroll to Top Button */}
                     {isVisible && (
