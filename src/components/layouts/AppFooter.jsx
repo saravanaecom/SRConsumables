@@ -24,18 +24,18 @@ const AppFooter = ({ CompanyDetails }) => {
                                     <AppLogo />
                                 </Box>
                                 <Box display="flex" gap={2} sx={{ py: 3 }}>
-                                    <Link href="#">
+                                    {/* <Link href="#">
                                         <Instagram sx={{ color: theme.palette.footertextcolorCode.main }}/>
                                     </Link>
                                     <Link href="#">
                                         <Twitter sx={{ color: theme.palette.footertextcolorCode.main }}/>
-                                    </Link>
-                                    <Link href="#">
+                                    </Link> */}
+                                    <a href="https://www.facebook.com/share/18xy89vsMb/">
                                         <Facebook sx={{ color: theme.palette.footertextcolorCode.main }} />
-                                    </Link>
-                                    <Link href="#">
+                                    </a>
+                                    {/* <Link href="#">
                                         <LinkedIn sx={{ color: theme.palette.footertextcolorCode.main }}/>
-                                    </Link>
+                                    </Link> */}
                                 </Box>
                                 <Typography variant="caption" sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>
                                     Developed by Kassapos software solutions Pvt Ltd
@@ -79,10 +79,10 @@ const AppFooter = ({ CompanyDetails }) => {
                                 </Typography>
                             </Box>
                             <Box>
-                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Mobile: {ServerURL.COMPANY_MOBILE}</Typography>
+                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Mobile: +91 422358053</Typography>
                             </Box>
                             <Box>
-                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Email: {ServerURL.COMPANY_EMAIL}</Typography>
+                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Email: customercare@penskart.com</Typography>
                             </Box>
                         </Grid>
 
