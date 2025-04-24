@@ -79,7 +79,7 @@ const AppFooter = ({ CompanyDetails }) => {
                                 </Typography>
                             </Box>
                             <Box>
-                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Mobile: +91 422358053</Typography>
+                                <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Mobile: +91 4223580535</Typography>
                             </Box>
                             <Box>
                                 <Typography component={'p'} sx={{ mt: 1, color: theme.palette.footertextcolorCode.main }}>Email: customercare@penskart.com</Typography>
