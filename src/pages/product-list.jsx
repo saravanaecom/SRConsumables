@@ -7,7 +7,7 @@ import ProductCard from '../components/ProductCard';
 import { API_FetchOfferFastMovingProduct, API_FetchNewProduct, API_FetchProductIdMoreItems, API_FetchProductByCategory, API_FetchProductBySubCategory, API_FetchBrand } from '../services/productListServices';
 import { API_FetchCategorySubCategory } from '../services/categoryServices';
 import { ImagePathRoutes } from '../routes/ImagePathRoutes';
-import { styled } from '@mui/system';
+import { positions, styled } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import AllCategory from '../assets/alc.jpg';
 //import PlayStrore from '../../D:\KarthikWorkSpace\ReactProject\treeandleef\ecommercev7_frontend-main\src\assets\alc.jpg';
@@ -55,6 +55,7 @@ const ProductList = () => {
   const [brands, setBrands] = useState([]);
   const [fullProductList, setFullProductList] = useState([])
   const [selectedBrand, setSelectedBrand] = useState("All brands");
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const [productFilterName, setProductFilterName] = useState('All products');
 
@@ -193,6 +194,19 @@ const ProductList = () => {
       setProductLists(filteredProducts);
     }
   };
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 150);
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     // Parse query parameters from the URL
     const queryParams = new URLSearchParams(location.search);
@@ -382,11 +396,11 @@ const ProductList = () => {
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={backdropOpen}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Container maxWidth="xl" sx={{ px: { xs: 0, md: 3 } }}>
+      <Container maxWidth="xl" sx={{ px: { xs: 0, md: 3 } ,mt: {xs:0 ,md: 7} }}>
         <Grid container>
           {/* Left-side Drawer for larger screens */}
           {(offerProducts === null && relatedProducts === null && newProducts === null) && (
-            <Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' } }} style={{ position: 'sticky', top: 70, height: '100vh' }}>
+            <Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' } }} style={{ position: 'sticky',  height: '100vh' }}>
               <Drawer
                 variant="permanent"
                 sx={{
@@ -453,18 +467,26 @@ const ProductList = () => {
           )}
 
           {/* Mobile Drawer Toggle Button */}
+       
+
           {(offerProducts === null && relatedProducts === null && newProducts === null) && (
-            <Grid item xs={12} md={2} sx={{ display: { xs: 'block', md: 'none' }, position: 'sticky', top: 0, height: '100vh' }}>
+            <Grid item xs={2} md={2} sx={{ display: { xs: 'flex', md: 'none' }, position: '', top: 0 }}>
               <Drawer
                 variant="permanent"
                 sx={{
                   width: '80px',
                   flexShrink: 0,
-                  position: "relative",
+                  position: "sticky",
                   '& .MuiDrawer-paper': {
                     width: '80px',
                     boxSizing: 'border-box',
-                    position: "relative",
+                    height: '100%', // Adjust height to avoid white space
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflowY: 'auto', 
+                    position: "fixed",
+                    top: isScrolled ? 100 : 250,
+                   
                   },
                 }}
               >
@@ -494,6 +516,9 @@ const ProductList = () => {
               </Drawer>
             </Grid>
           )}
+
+
+
           {/* Right-side Content Area */}
           <Grid item xs={12} md={offerProducts === null && relatedProducts === null && newProducts === null ? 10 : 12} sx={{ p: 3 }}>
             <Grid container sx={{ px: { xs: 0, md: 0 }, justifyContent: "flex-start", gap: "0px 18px" }}>
@@ -504,7 +529,10 @@ const ProductList = () => {
                 sx={{
                   width: "100%",
                   display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
                   justifyContent: "space-between",
+                  position: "relative",
+                  left: { xs: 80, md: 0 },
                   alignItems: "center",
                 }}
               >
@@ -525,7 +553,8 @@ const ProductList = () => {
                 {/* Filters Section */}
                 <Box
                   sx={{
-                    width: { xs: "100%", md: "auto" },
+                    width: { xs: "50%", md: "auto" },
+                 
                     display: "flex",
                     flexDirection: { xs: "column", md: "row" },
                     justifyContent: "space-between",
@@ -564,8 +593,6 @@ const ProductList = () => {
                         </FormControl>
                     </Box>
                   )}
-
-
                   {/* Product Filter */}
                   <Box
                     sx={{
@@ -597,45 +624,37 @@ const ProductList = () => {
               </Box>
 
               {/* Render filtered product list */}
-              <div
-                className={
-                  offerProducts === null &&
-                    relatedProducts === null &&
-                    newProducts === null
-                    ? "grid h-full w-full grid-cols-2 content-start gap-x-3 overflow-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 pb-24 no-scrollbar"
-                    : "grid h-full w-full grid-cols-2 content-start gap-x-3 overflow-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 pb-24 no-scrollbar"
-                }
-              >
-                {loading ? (
-                  // Show loading indicator while fetching
-                  <Box display="flex" justifyContent="center" alignItems="center" width="100%">
-                    {/* <CircularProgress /> */}
-                  </Box>
-                ) : productLists.length > 0 ? (
-                  productLists.map((product) => (
-                    <Box key={product.id} sx={{ mb: 3 }}>
-                      <ProductCard
-                        product={product}
-                        isLoading={loading}
-                        offerProducts={offerProducts}
-                        relatedProducts={relatedProducts}
-                        newProducts={newProducts}
-                      />
-                    </Box>
-                  ))
-                ) : (
-                  // Show "No products available." only if not loading
-                  !loading &&
-                  !backdropOpen && (
-                    <Typography
-                      variant="h6"
-                      sx={{ mt: 3, width: "100%", textAlign: "center", color: theme.palette.basecolorCode.main }}
-                    >
-                      No products available.
-                    </Typography>
-                  )
-                )}
-              </div>
+              <Grid container spacing={2} >
+          {loading ? (
+         <Box display="flex" justifyContent="center" alignItems="center" width="100%">
+          <CircularProgress />
+      </Box>
+     ) : productLists.length > 0 ? (
+    productLists.map((product) => (
+      <Grid item xs={12} md={3} key={product.id} sx={{  position:{xs:"relative"},left:{xs:50}}}> {/* Each card takes half the row */}
+        <ProductCard
+          product={product}
+          isLoading={loading}
+          offerProducts={offerProducts}
+          relatedProducts={relatedProducts}
+          newProducts={newProducts}
+        />
+      </Grid>
+    ))
+  ) : (
+    <Typography
+      variant="h6"
+      sx={{
+        mt: 3,
+        width: "100%",
+        textAlign: "center",
+        color: theme.palette.basecolorCode.main,
+      }}
+    >
+      No products available.
+    </Typography>
+  )}
+</Grid>
 
             </Grid>
           </Grid>
